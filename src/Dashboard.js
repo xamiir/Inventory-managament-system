@@ -22,7 +22,7 @@ const Dashboard = () => {
                     </div>
                 </nav>
                  </div>
-             <SalesOrder/>
+             <Addpro/>
             </div>
 
     )
