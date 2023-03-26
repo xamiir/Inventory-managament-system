@@ -41,12 +41,9 @@ const SalesOrder = () => {
             <label htmlFor="description" className="sr-only">Net Price</label>
             <input type="number" name="NetPrice" id="NetPrice" placeholder="Enter Net Price" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" />
             </div>
-            <div className="mb-4 flex justify-start gap-4">
+            <div className="mb-4 ">
             <button className="bg-blue-500 text-white px-4 py-3 rounded font-medium w-52">AddCart</button>
            
-            <button className="bg-red-500 text-white px-4 py-3 rounded font-medium w-52">DeleteCart</button>
-    
-            <button className="bg-green-500 text-white px-4 py-3 rounded font-medium w-52">UpdateCart</button>
              
             </div>
             <div  className="mb-4 mt-0 flex justify-center">
@@ -63,6 +60,7 @@ const SalesOrder = () => {
             <th className="px-4 py-2">Total Price</th>
             <th className="px-4 py-2">Discount</th>
             <th className="px-4 py-2">Net Price</th>
+            <th className="px-4 py-2">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -75,6 +73,12 @@ const SalesOrder = () => {
             <td className="border px-4 py-2">360</td>
             <td className="border px-4 py-2">5</td>
             <td className="border px-4 py-2">355</td>
+            <td className="border px-4 py-2 flex justify-between gap-2 ">
+            <button className="bg-green-500 text-white px-10 py-2 rounded font-medium">Edit</button>
+            <button className="bg-red-500 text-white px-10 py-2 rounded font-medium">Delete</button>
+            </td>
+
+
             </tr>
             </tbody>
             </table>
