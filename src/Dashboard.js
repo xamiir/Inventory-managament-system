@@ -3,6 +3,8 @@ import Customers from "./Files/Customers";
 import Product from "./Files/Product";
 import SalesOrder from "./Files/SalesOder";
 import Cus from "./Files/Cus";
+import Adduser from "./Files/Adduser";
+
 
 
 
@@ -23,7 +25,7 @@ const Dashboard = () => {
                     </div>
                 </nav>
                  </div>
-             <Cus/>
+           <Adduser/>
             </div>
 
     )
