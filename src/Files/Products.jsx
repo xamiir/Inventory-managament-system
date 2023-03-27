@@ -25,7 +25,11 @@ const Products = () => {
                 Category,
                 totalPrice,
             };
+<<<<<<< HEAD
             if (name === "" || price === "" || description === "" || quantity === "" || Category === "" ) {
+=======
+            if (name === "" || price === "" || description === "" || quantity === "" || Category === "" || totalPrice === "") {
+>>>>>>> e520e7831bdae390e1b088673cb49d4481ea3968
                 alert("Please fill all the fields");
                 return;
             }
@@ -83,6 +87,7 @@ const Products = () => {
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4 flex justify-between  ">
                             <label htmlFor="name" className="sr-only">Product Name</label>
+<<<<<<< HEAD
                             <input type="text" name="product name" id="product Name" placeholder="Enter Product Name" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" value={name} onChange={(e)=>setName(e.target.value)}  />
                             <label htmlFor="price" className="sr-only">Price</label>
                             <input type="number" name="price" id="price" placeholder="Enter Price" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" value={price} onChange={(e)=>setPrice(e.target.value)} />
@@ -98,6 +103,23 @@ const Products = () => {
                             <input type="text" name="Category" id="Category" placeholder="Enter Category" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" value={Category} onChange={(e)=>setCategory(e.target.value)} />
                             <label htmlFor="totalPrice" className="sr-only">Total Price</label>
                             <input type="text" name="totalPrice" id="totalPrice" placeholder="Enter Total Price" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" value={quantity*price} onChange={(e)=>setTotalPrice(e.target.value)} />
+=======
+                            <input type="text" name="product name" id="product Name" placeholder="Enter Product Name" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" onChange={(e)=>setName(e.target.value)}  />
+                            <label htmlFor="price" className="sr-only">Price</label>
+                            <input type="text" name="price" id="price" placeholder="Enter Price" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" onChange={(e)=>setPrice(e.target.value)} />
+                            </div>
+                            <div className="mb-4 flex justify-between  ">
+                            <label htmlFor="description" className="sr-only">Description</label>
+                            <input type="text" name="description" id="description" placeholder="Enter Description" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" onChange={(e)=>setDescription(e.target.value)} />
+                            <label htmlFor="quantity" className="sr-only">Quantity</label>
+                            <input type="text" name="quantity" id="quantity" placeholder="Enter Quantity" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" onChange={(e)=>setQuantity(e.target.value)} />
+                            </div>
+                            <div className="mb-4 flex justify-between  ">
+                            <label htmlFor="Category" className="sr-only">Category</label>
+                            <input type="text" name="Category" id="Category" placeholder="Enter Category" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" onChange={(e)=>setCategory(e.target.value)} />
+                            <label htmlFor="totalPrice" className="sr-only">Total Price</label>
+                            <input type="text" name="totalPrice" id="totalPrice" placeholder="Enter Total Price" className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between" onChange={(e)=>setTotalPrice(e.target.value)} />
+>>>>>>> e520e7831bdae390e1b088673cb49d4481ea3968
                             </div>
                             <div className="mb-4 flex justify-between  ">
                             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded font-medium w-[10%]">{isEdit ? "Edit" : "Add"}</button>
@@ -105,7 +127,10 @@ const Products = () => {
                 </form>
                 <div className="flex justify-center">
                     <div className="w-full">
+<<<<<<< HEAD
                     <h1 className="text-3xl font-bold text-gray-600  text-center mb-6">Product List</h1>
+=======
+>>>>>>> e520e7831bdae390e1b088673cb49d4481ea3968
                         <table className="table-auto w-full">
                             <thead>
                                 <tr>
@@ -128,7 +153,11 @@ const Products = () => {
                                             <td className="border px-4 py-2">{description}</td>
                                             <td className="border px-4 py-2">{quantity}</td>
                                             <td className="border px-4 py-2">{Category}</td>
+<<<<<<< HEAD
                                             <td className="border px-4 py-2">{quantity*price}</td>
+=======
+                                            <td className="border px-4 py-2">{totalPrice}</td>
+>>>>>>> e520e7831bdae390e1b088673cb49d4481ea3968
                                             <td className="border px-4 py-2 flex justify-end gap-4">
                                                 <button className="bg-green-500 text-white px-4 py-2 rounded font-medium" onClick={() => editProduct(id)}><FaEdit/></button>
                                                 <button className="bg-red-500 text-white px-4 py-2 rounded font-medium" onClick={() => removeProduct(id)}><FaTrash/></button>
