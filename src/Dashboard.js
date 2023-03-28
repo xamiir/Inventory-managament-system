@@ -1,15 +1,11 @@
 import { BrowserRouter ,Link,Routes,Route } from "react-router-dom";
-<<<<<<< HEAD
 import { FaHome,FaUser,FaUserPlus , FaFileInvoice ,FaBoxOpen,FaChartBar} from "react-icons/fa";
-=======
-import { FaHome,FaUser,FaUserPlus , FaFileInvoice ,FaBoxOpen} from "react-icons/fa";
-
->>>>>>> e520e7831bdae390e1b088673cb49d4481ea3968
 import Products from "./Files/Products";
 import Customers from "./Files/Customers";
 
 import SalesOrder from "./Files/SalesOder";
 import Adduser from "./Files/Adduser";
+import Home from "./Files/Home";
 
 
 
@@ -45,25 +41,23 @@ const Dashboard = () => {
                         <FaUser className= "text-2xl" />
                         <span> User's</span>
                     </Link>
-<<<<<<< HEAD
-                    <Link to= "/adduser" className= "text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white">
+                    <Link to= "/Report" className= "text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white">
                         <FaChartBar className= "text-2xl" />
                         <span>Reports</span>
                     </Link>
                     
-=======
->>>>>>> e520e7831bdae390e1b088673cb49d4481ea3968
                     
                     
                     </div>
                 </nav>
                  </div>
                  <Routes>
-                    <Route path= "/" element= {<h1></h1>} />
+                    <Route path= "/" element= {<Home />} />
                     <Route path= "/customers" element= {<Customers />} />
                     <Route path= "/salesorder" element= {<SalesOrder />} />
                     <Route path= "/Products" element= {<Products />} />
                     <Route path= "/adduser" element= {<Adduser />} />
+                    
                     </Routes>
             </div>
             </BrowserRouter>
