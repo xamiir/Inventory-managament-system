@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
+
 import { FaEdit,FaTrash } from 'react-icons/fa';
+import Style from './AddCustomer.model.css'
+
 
 
 
@@ -65,8 +68,9 @@ const Customers =()=>{
         setIsEdit(true);
         setId(id);
     };
+   
     return (
-        <div className="bg-gray-100 h-screen">
+        <div className={Style.div1}>
             <div className="flex justify-center">
                 <div className="w-full m-9 bg-white mt-10 p-6 rounded-lg">
                     <h1 className="text-3xl font-bold mb-1 text-center">Customer</h1>

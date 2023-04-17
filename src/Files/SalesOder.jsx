@@ -47,7 +47,7 @@ const SalesOrder = () => {
              
             </div>
             <div  className="mb-4 mt-0 flex justify-center">
-            <div className="w-full m-2 bg-white mt-10 p-6 rounded-lg">
+            <div className="w-full m-2 bg-white mt-0 p-6 rounded-lg">
             <h1 className="text-3xl font-bold mb-1 text-center">Cart</h1>
             <table className="table-auto w-full">
             <thead>
