@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Style from "./AddCustomer.model.css";
+import addStyle from "./AddCustomer.model.css";
 
 const Customers = () => {
   const [CustomerName, setCustomerName] = useState("");
@@ -75,12 +75,12 @@ const Customers = () => {
   }, [Customer]);
 
   return (
-    <div className=" bg-gray-100 h-screen">
-      <div className="flex justify-center">
-        <div className="w-full m-9 bg-white mt-10 p-6 rounded-lg">
-          <h1 className="text-3xl font-bold mb-1 text-center">Customer</h1>
+    <div className="div1">
+      <div className="div2">
+        <div className="div3">
+          <h1 className="div4">Customer</h1>
           <form action="" onSubmit={handleSubmit}>
-            <div className="mb-4 flex justify-between  ">
+            <div className="div5">
               <label htmlFor="name" className="sr-only">
                 Customer Name
               </label>
@@ -89,7 +89,7 @@ const Customers = () => {
                 name="CustomerName"
                 id="CustomerName"
                 placeholder="Enter Customer Name"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={CustomerName}
                 onChange={(e) => setCustomerName(e.target.value)}
               />
@@ -101,7 +101,7 @@ const Customers = () => {
                 name="PhoneNumber"
                 id="PhoneNumber"
                 placeholder="Enter Phone Number"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={PhoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
@@ -115,7 +115,7 @@ const Customers = () => {
                 name="Address"
                 id="Address"
                 placeholder="Enter Address"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={Address}
                 onChange={(e) => setAddress(e.target.value)}
               />
@@ -127,32 +127,28 @@ const Customers = () => {
                 name="Email"
                 id="Email"
                 placeholder="Enter Email"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={Email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="mb-4 flex justify-between ">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded font-medium w-[10%]">
-                {isEdit ? "Edit" : "Add"}
-              </button>
+            <div className="div6 ">
+              <button className="addButton">{isEdit ? "Edit" : "Add"}</button>
             </div>
           </form>
 
-          <div className="mb-4 mt-0 flex justify-center">
-            <div className="w-full m-2 bg-white mt-10 p-6 rounded-lg">
-              <h1 className="text-3xl font-bold mb-1 text-center">
-                Customer List
-              </h1>
-              <div class="overflow-y-auto h-48">
-                <table className="table-auto w-full">
+          <div className="div7">
+            <div className="div8">
+              <h1 className="div9">Customer List</h1>
+              <div class="div10">
+                <table className="table-control">
                   <thead>
                     <tr>
-                      <th className="px-4 py-2">Customer Name</th>
-                      <th className="px-4 py-2">Phone Number</th>
-                      <th className="px-4 py-2">Address</th>
-                      <th className="px-4 py-2">Email</th>
-                      <th className="px-4 py-2">Action</th>
+                      <th className="tr-control">Customer Name</th>
+                      <th className="tr-control">Phone Number</th>
+                      <th className="tr-control">Address</th>
+                      <th className="tr-control">Email</th>
+                      <th className="tr-control">Action</th>
                     </tr>
                   </thead>
 
@@ -162,19 +158,19 @@ const Customers = () => {
                         item;
                       return (
                         <tr key={id}>
-                          <td className="border px-4 py-2">{CustomerName}</td>
-                          <td className="border px-4 py-2">{PhoneNumber}</td>
-                          <td className="border px-4 py-2">{Address}</td>
-                          <td className="border px-4 py-2">{Email}</td>
-                          <td className="border px-4 py-2 flex justify-end gap-4">
+                          <td className="td-control">{CustomerName}</td>
+                          <td className="td-control">{PhoneNumber}</td>
+                          <td className="td-control">{Address}</td>
+                          <td className="td-control">{Email}</td>
+                          <td className="bnt-control">
                             <button
-                              className="bg-green-500 text-white px-4 py-2 rounded font-medium"
+                              className="edit-button"
                               onClick={() => editCustomer(id)}
                             >
                               <FaEdit />
                             </button>
                             <button
-                              className="bg-red-500 text-white px-4 py-2 rounded font-medium"
+                              className="delete-button"
                               onClick={() => removeCustomer(id)}
                             >
                               <FaTrash />
