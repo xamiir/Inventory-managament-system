@@ -11,8 +11,8 @@ import Products from "./Files/Products";
 import Customers from "./Files/Customers";
 
 import SalesOrder from "./Files/SalesOder";
-import Adduser from "./Files/Adduser";
 import Home from "./Files/Home";
+import Userlist from "./Files/Userlist";
 
 const Dashboard = () => {
   return (
@@ -61,7 +61,7 @@ const Dashboard = () => {
                 <span>Products</span>
               </Link>
               <Link
-                to="/adduser"
+                to="/Userlist"
                 className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
               >
                 <FaUser className="text-2xl" />
@@ -82,7 +82,9 @@ const Dashboard = () => {
           <Route path="/customers" element={<Customers />} />
           <Route path="/salesorder" element={<SalesOrder />} />
           <Route path="/Products" element={<Products />} />
-          <Route path="/adduser" element={<Adduser />} />
+          {/* <Route path="/adduser" element={<Adduser />} /> */}
+
+          <Route path="/Userlist" element={<Userlist />} />
         </Routes>
       </div>
     </BrowserRouter>
