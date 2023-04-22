@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import productStyle from "./product.css";
+import productStyle from "./product.model.css";
 
 const Products = () => {
   const [name, setName] = useState("");
