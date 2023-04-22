@@ -70,11 +70,12 @@ const Userlist = () => {
       setPassword("");
       setConfirmPassword("");
       setIsEdit(false);
+      setId(0);
     }
   };
 
   const removeUser = (id) => {
-    if (window.confirm("Are you sure to delete this user?")) {
+    if (!window.confirm("Are you sure to delete this user?")) {
       return;
     }
     const newUser = users.filter((item) => item.id !== id);
@@ -130,7 +131,7 @@ const Userlist = () => {
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 id="email"
                 placeholder="Email"
@@ -218,15 +219,15 @@ const Userlist = () => {
                           <td className="border px-4 py-2">
                             <button
                               onClick={() => editUser(id)}
-                              className="bg-yellow-500 text-white px-4 py-2 rounded font-medium"
+                              className="bg-green-500 text-white px-4 py-2 rounded font-medium"
                             >
                               <FaEdit />
                             </button>
                           </td>
                           <td className="border px-4 py-2">
                             <button
-                              onClick={() => removeUser(id)}
                               className="bg-red-500 text-white px-4 py-2 rounded font-medium"
+                              onClick={() => removeUser(id)}
                             >
                               <FaTrash />
                             </button>

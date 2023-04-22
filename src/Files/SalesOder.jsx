@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const SalesOrder = () => {
   const [customerName, setCustomerName] = useState("");
-  const [Date, setDate] = useState("");
-  const [product, setProduct] = useState("");
+  const [regDate, setRegDate] = useState("");
+  const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [orginalPrice, setOrginalPrice] = useState("");
   const [discount, setDiscount] = useState("");
@@ -15,11 +16,11 @@ const SalesOrder = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isEdit) {
-      const newSalesOrder = {
+      const newSalesorder = {
         id: new Date().getTime().toString(),
         customerName,
-        Date,
-        product,
+        regDate,
+        productName,
         quantity,
         orginalPrice,
         discount,
@@ -27,32 +28,31 @@ const SalesOrder = () => {
       };
       if (
         customerName === "" ||
-        Date === "" ||
-        product === "" ||
+        regDate === "" ||
+        productName === "" ||
         quantity === "" ||
         orginalPrice === "" ||
-        discount === "" ||
-        totalPrice === ""
+        discount == ""
       ) {
         alert("Please fill all the fields");
         return;
       }
-      setSalesOrder([...SalesOrder, newSalesOrder]);
+      setSalesOrder([...SalesOrder, newSalesorder]);
       setCustomerName("");
-      setDate("");
-      setProduct("");
+      setProductName("");
+      setRegDate("");
       setQuantity("");
       setOrginalPrice("");
       setDiscount("");
       setTotalPrice("");
     } else {
-      const newSalesOrder = SalesOrder.map((item) => {
+      const newSalesorder = SalesOrder.map((item) => {
         if (item.id === id) {
           return {
             ...item,
             customerName,
-            Date,
-            product,
+            regDate,
+            productName,
             quantity,
             orginalPrice,
             discount,
@@ -61,38 +61,46 @@ const SalesOrder = () => {
         }
         return item;
       });
-      setSalesOrder(newSalesOrder);
+      setSalesOrder(newSalesorder);
       setCustomerName("");
-      setDate("");
-      setProduct("");
+      setProductName("");
+      setRegDate("");
       setQuantity("");
       setOrginalPrice("");
       setDiscount("");
       setTotalPrice("");
       setIsEdit(false);
+      setId(0);
     }
   };
-
-  const removeItem = (id) => {
-    if (window.confirm("Are you sure to delete this item?")) {
+  const removeOrder = (id) => {
+    if (!window.confirm("Are you sure you want to delete this Product?")) {
       return;
     }
-    const newSalesOrder = SalesOrder.filter((item) => item.id !== id);
-    setSalesOrder(newSalesOrder);
+    const newSalesorder = SalesOrder.filter((item) => item.id !== id);
+    setSalesOrder(newSalesorder);
   };
-  const editItem = (id) => {
-    const newSalesOrder = SalesOrder.find((item) => item.id === id);
-    setCustomerName(newSalesOrder.customerName);
-    setDate(newSalesOrder.Date);
-    setProduct(newSalesOrder.product);
-    setQuantity(newSalesOrder.quantity);
-    setOrginalPrice(newSalesOrder.orginalPrice);
-    setDiscount(newSalesOrder.discount);
-    setTotalPrice(newSalesOrder.totalPrice);
+  const Editorder = (id) => {
+    const newSalesorder = SalesOrder.find((item) => item.id === id);
+    const {
+      customerName,
+      regDate,
+      productName,
+      quantity,
+      orginalPrice,
+      discount,
+      totalPrice,
+    } = newSalesorder;
+    setCustomerName(customerName);
+    setProductName(productName);
+    setRegDate(regDate);
+    setQuantity(quantity);
+    setOrginalPrice(orginalPrice);
+    setDiscount(discount);
+    setTotalPrice(totalPrice);
     setIsEdit(true);
     setId(id);
   };
-
   return (
     <div className="bg-gray-100 h-screen">
       <div className="flex justify-center">
@@ -105,10 +113,10 @@ const SalesOrder = () => {
                 <input
                   type="text"
                   name="customerName"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="Enter Customer Name"
                   className="bg-white border-2 w-full p-2 rounded-lg"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
               <div className="w-1/2 gap-6">
@@ -116,10 +124,10 @@ const SalesOrder = () => {
                 <input
                   type="date"
                   name="Date"
-                  value={Date}
-                  onChange={(e) => setDate(e.target.value)}
                   placeholder="Enter Date"
                   className="bg-white border-2 w-full p-2 rounded-lg"
+                  value={regDate}
+                  onChange={(e) => setRegDate(e.target.value)}
                 />
               </div>
             </div>
@@ -129,10 +137,10 @@ const SalesOrder = () => {
                 <input
                   type="text"
                   name="product"
-                  value={product}
-                  onChange={(e) => setProduct(e.target.value)}
                   placeholder="Enter Product"
                   className="bg-white border-2 w-full p-2 rounded-lg"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
                 />
               </div>
               <div className="w-1/2 gap-6">
@@ -140,10 +148,10 @@ const SalesOrder = () => {
                 <input
                   type="number"
                   name="quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
                   placeholder="Enter Quantity"
                   className="bg-white border-2 w-full p-2 rounded-lg"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
             </div>
@@ -153,10 +161,10 @@ const SalesOrder = () => {
                 <input
                   type="number"
                   name="orginalPrice"
-                  value={orginalPrice}
-                  onChange={(e) => setOrginalPrice(e.target.value)}
                   placeholder="Enter Orginal Price"
                   className="bg-white border-2 w-full p-2 rounded-lg"
+                  value={orginalPrice}
+                  onChange={(e) => setOrginalPrice(e.target.value)}
                 />
               </div>
               <div className="w-1/2 gap-6">
@@ -164,87 +172,79 @@ const SalesOrder = () => {
                 <input
                   type="number"
                   name="discount"
-                  value={discount}
-                  onChange={(e) => setDiscount(e.target.value)}
                   placeholder="Enter Discount"
                   className="bg-white border-2 w-full p-2 rounded-lg"
+                  value={discount}
+                  onChange={(e) => setDiscount(e.target.value)}
                 />
               </div>
             </div>
-            <div className="flex justify-between gap-3">
-              <div className="w-1/2">
-                <label htmlFor="totalPrice">Total Price</label>
-                <input
-                  type="number"
-                  name="totalPrice"
-                  value={totalPrice}
-                  onChange={(e) => setTotalPrice(e.target.value)}
-                  placeholder="Enter Total Price"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
-                />
-              </div>
-
-              <div className="w-1/2 flex justify-end">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg w-[50%] mt-6 ">
-                  {isEdit ? "Edit" : "Add"}
+            <div className="flex justify-between ">
+              <div className="w-1/2 flex justify-start">
+                <button className="bg-blue-500 text-white px-2 py-2 rounded-lg w-[30%] mt-6 ml-2 font-bold">
+                  {isEdit ? "update" : "AddCart"}
                 </button>
               </div>
             </div>
           </form>
           <div className="mt-10">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2">Customer Name</th>
-                  <th className="px-4 py-2">Date</th>
-                  <th className="px-4 py-2">Product</th>
-                  <th className="px-4 py-2">Quantity</th>
-                  <th className="px-4 py-2">Orginal Price</th>
-                  <th className="px-4 py-2">Discount</th>
-                  <th className="px-4 py-2">Total Price</th>
-                  <th className="px-4 py-2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {SalesOrder.map((item) => {
-                  const {
-                    id,
-                    customerName,
-                    Date,
-                    product,
-                    quantity,
-                    orginalPrice,
-                    discount,
-                    totalPrice,
-                  } = item;
-                  return (
-                    <tr key={id}>
-                      <td className="border px-4 py-2">{customerName}</td>
-                      <td className="border px-4 py-2">{Date}</td>
-                      <td className="border px-4 py-2">{product}</td>
-                      <td className="border px-4 py-2">{quantity}</td>
-                      <td className="border px-4 py-2">{orginalPrice}</td>
-                      <td className="border px-4 py-2">{discount}</td>
-                      <td className="border px-4 py-2">{totalPrice}</td>
-                      <td className="border px-4 py-2">
-                        <button
-                          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                          onClick={() => editItem(id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                          onClick={() => removeItem(id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="overflow-y-auto h-48 w-full">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-4 py-2">Customer Name</th>
+                    <th className="px-4 py-2">Date</th>
+                    <th className="px-4 py-2">Product</th>
+                    <th className="px-4 py-2">Quantity</th>
+                    <th className="px-4 py-2">Orginal Price</th>
+                    <th className="px-4 py-2">Discount</th>
+                    <th className="px-4 py-2">Total Price</th>
+                    <th className="px-4 py-2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SalesOrder.map((item) => {
+                    const {
+                      id,
+                      customerName,
+                      productName,
+                      regDate,
+                      quantity,
+                      orginalPrice,
+                      discount,
+                      totalPrice,
+                    } = item;
+                    return (
+                      <tr key={id}>
+                        <td className="border px-4 py-2">{customerName} </td>
+                        <td className="border px-4 py-2">{regDate} </td>
+                        <td className="border px-4 py-2">{productName} </td>
+                        <td className="border px-4 py-2">{quantity} </td>
+                        <td className="border px-4 py-2">{orginalPrice} </td>
+                        <td className="border px-4 py-2">{discount} </td>
+                        <td className="border px-4 py-2">
+                          {orginalPrice * quantity - discount}{" "}
+                        </td>
+                        <td className="border px-4 py-2 flex gap-2">
+                          <button
+                            className="bg-green-500 text-white px-2 py-2 rounded-lg "
+                            onClick={() => Editorder(id)}
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            className="bg-red-500 text-white px-2 py-2 rounded-lg mr-0"
+                            onClick={() => removeOrder(id)}
+                          >
+                            <FaTrash />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

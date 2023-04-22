@@ -140,7 +140,7 @@ const Customers = () => {
           <div className="div7">
             <div className="div8">
               <h1 className="div9">Customer List</h1>
-              <div class="div10">
+              <div className="div10">
                 <table className="table-control">
                   <thead>
                     <tr>
