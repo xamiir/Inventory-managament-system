@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-//import salesStyle from "./salesOrder.model.css";
+import salesStyle from "./salesOrder.model.css";
 
 const SalesOrder = () => {
   const [customerName, setCustomerName] = useState("");
