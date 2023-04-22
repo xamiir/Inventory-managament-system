@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import productStyle from "./product.css";
 
 const Products = () => {
   const [name, setName] = useState("");
@@ -90,12 +91,12 @@ const Products = () => {
   };
 
   return (
-    <div className="bg-gray-100 h-screen">
-      <div className="flex justify-center">
-        <div className="w-full m-9 bg-white mt-10 p-6 rounded-lg">
-          <h1 className="text-3xl font-bold mb-1 text-center">Products</h1>
+    <div className="container">
+      <div className="div-container">
+        <div className="child-container">
+          <h1 className="tag-h1">Products</h1>
           <form onSubmit={handleSubmit}>
-            <div className="mb-4 flex justify-between  ">
+            <div className="form-control  ">
               <label htmlFor="name" className="sr-only">
                 Product Name
               </label>
@@ -104,7 +105,7 @@ const Products = () => {
                 name="product name"
                 id="product Name"
                 placeholder="Enter Product Name"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -116,7 +117,7 @@ const Products = () => {
                 name="price"
                 id="price"
                 placeholder="Enter Price"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
@@ -130,7 +131,7 @@ const Products = () => {
                 name="description"
                 id="description"
                 placeholder="Enter Description"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -142,7 +143,7 @@ const Products = () => {
                 name="quantity"
                 id="quantity"
                 placeholder="Enter Quantity"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />
@@ -156,7 +157,7 @@ const Products = () => {
                 name="Category"
                 id="Category"
                 placeholder="Enter Category"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={Category}
                 onChange={(e) => setCategory(e.target.value)}
               />
@@ -168,36 +169,31 @@ const Products = () => {
                 name="totalPrice"
                 id="totalPrice"
                 placeholder="Enter Total Price"
-                className="bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between"
+                className="input-control"
                 value={quantity * price}
                 onChange={(e) => setTotalPrice(e.target.value)}
               />
             </div>
-            <div className="mb-4 flex justify-between  ">
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded font-medium w-[10%]"
-              >
+            <div className="bnt-container  ">
+              <button type="submit" className="addButton-control">
                 {isEdit ? "Edit" : "Add"}
               </button>
             </div>
           </form>
-          <div className="flex justify-center">
+          <div className="table-container">
             <div className="w-full">
-              <h1 className="text-3xl font-bold text-gray-600  text-center mb-6">
-                Product List
-              </h1>
-              <div className="overflow-y-auto h-48 w-full">
-                <table className="table-auto w-full">
+              <h1 className="list-control">Product List</h1>
+              <div className="scrol-bal">
+                <table className="table-control">
                   <thead>
                     <tr>
-                      <th className="border px-4 py-2">Product Name</th>
-                      <th className="border px-4 py-2">Price</th>
-                      <th className="border px-4 py-2">Description</th>
-                      <th className="border px-4 py-2">Quantity</th>
-                      <th className="border px-4 py-2">Category</th>
-                      <th className="border px-4 py-2">Total Price</th>
-                      <th className="border px-4 py-2">Action</th>
+                      <th className="th-control">Product Name</th>
+                      <th className="th-control">Price</th>
+                      <th className="th-control">Description</th>
+                      <th className="th-control">Quantity</th>
+                      <th className="th-control">Category</th>
+                      <th className="th-control">Total Price</th>
+                      <th className="th-control">Action</th>
                     </tr>
                   </thead>
 
@@ -214,15 +210,13 @@ const Products = () => {
                       } = item;
                       return (
                         <tr key={id}>
-                          <td className="border px-4 py-2">{name}</td>
-                          <td className="border px-4 py-2">{price}</td>
-                          <td className="border px-4 py-2">{description}</td>
-                          <td className="border px-4 py-2">{quantity}</td>
-                          <td className="border px-4 py-2">{Category}</td>
-                          <td className="border px-4 py-2">
-                            {price * quantity}
-                          </td>
-                          <td className="border px-4 py-2 flex justify-end gap-4">
+                          <td className="td-control">{name}</td>
+                          <td className="td-control">{price}</td>
+                          <td className="td-control">{description}</td>
+                          <td className="td-control">{quantity}</td>
+                          <td className="td-control">{Category}</td>
+                          <td className="td-control">{price * quantity}</td>
+                          <td className="bnt-action">
                             <button
                               className="bg-green-500 text-white px-4 py-2 rounded font-medium"
                               onClick={() => editProduct(id)}

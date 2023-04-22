@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import salesStyle from "./salesOrder.model.css";
 
 const SalesOrder = () => {
   const [customerName, setCustomerName] = useState("");
@@ -102,19 +103,19 @@ const SalesOrder = () => {
     setId(id);
   };
   return (
-    <div className="bg-gray-100 h-screen">
-      <div className="flex justify-center">
-        <div className="w-full m-9 bg-white mt-10 p-6 rounded-lg">
-          <h1 className="text-2xl font-bold mb-5 text-center">Sales Order</h1>
+    <div className="container ">
+      <div className="child-container">
+        <div className="div-container">
+          <h1 className="tag-h1">Sales Order</h1>
           <form onSubmit={handleSubmit}>
-            <div className="flex justify-between gap-3">
+            <div className="form-control">
               <div className="w-1/2">
                 <label htmlFor="customerName">Customer Name</label>
                 <input
                   type="text"
                   name="customerName"
                   placeholder="Enter Customer Name"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
+                  className="input-control"
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
@@ -125,7 +126,7 @@ const SalesOrder = () => {
                   type="date"
                   name="Date"
                   placeholder="Enter Date"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
+                  className="input-control"
                   value={regDate}
                   onChange={(e) => setRegDate(e.target.value)}
                 />
@@ -138,7 +139,7 @@ const SalesOrder = () => {
                   type="text"
                   name="product"
                   placeholder="Enter Product"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
+                  className="input-control"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
                 />
@@ -149,7 +150,7 @@ const SalesOrder = () => {
                   type="number"
                   name="quantity"
                   placeholder="Enter Quantity"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
+                  className="input-control"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                 />
@@ -162,7 +163,7 @@ const SalesOrder = () => {
                   type="number"
                   name="orginalPrice"
                   placeholder="Enter Orginal Price"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
+                  className="input-control"
                   value={orginalPrice}
                   onChange={(e) => setOrginalPrice(e.target.value)}
                 />
@@ -173,33 +174,33 @@ const SalesOrder = () => {
                   type="number"
                   name="discount"
                   placeholder="Enter Discount"
-                  className="bg-white border-2 w-full p-2 rounded-lg"
+                  className="input-control"
                   value={discount}
                   onChange={(e) => setDiscount(e.target.value)}
                 />
               </div>
             </div>
-            <div className="flex justify-between ">
-              <div className="w-1/2 flex justify-start">
-                <button className="bg-blue-500 text-white px-2 py-2 rounded-lg w-[30%] mt-6 ml-2 font-bold">
+            <div className="bnt-contair ">
+              <div className="bnt-con">
+                <button className="button-control">
                   {isEdit ? "update" : "AddCart"}
                 </button>
               </div>
             </div>
           </form>
           <div className="mt-10">
-            <div className="overflow-y-auto h-48 w-full">
+            <div className="scrol-bal">
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="px-4 py-2">Customer Name</th>
-                    <th className="px-4 py-2">Date</th>
-                    <th className="px-4 py-2">Product</th>
-                    <th className="px-4 py-2">Quantity</th>
-                    <th className="px-4 py-2">Orginal Price</th>
-                    <th className="px-4 py-2">Discount</th>
-                    <th className="px-4 py-2">Total Price</th>
-                    <th className="px-4 py-2">Action</th>
+                    <th className="th-control">Customer Name</th>
+                    <th className="th-control">Date</th>
+                    <th className="th-control">Product</th>
+                    <th className="th-control">Quantity</th>
+                    <th className="th-control">Orginal Price</th>
+                    <th className="th-control">Discount</th>
+                    <th className="th-control">Total Price</th>
+                    <th className="th-control">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -216,24 +217,24 @@ const SalesOrder = () => {
                     } = item;
                     return (
                       <tr key={id}>
-                        <td className="border px-4 py-2">{customerName} </td>
-                        <td className="border px-4 py-2">{regDate} </td>
-                        <td className="border px-4 py-2">{productName} </td>
-                        <td className="border px-4 py-2">{quantity} </td>
-                        <td className="border px-4 py-2">{orginalPrice} </td>
-                        <td className="border px-4 py-2">{discount} </td>
-                        <td className="border px-4 py-2">
+                        <td className="td-control">{customerName} </td>
+                        <td className="td-control">{regDate} </td>
+                        <td className="td-control">{productName} </td>
+                        <td className="td-control">{quantity} </td>
+                        <td className="td-control">{orginalPrice} </td>
+                        <td className="td-control">{discount} </td>
+                        <td className="td-control">
                           {orginalPrice * quantity - discount}{" "}
                         </td>
-                        <td className="border px-4 py-2 flex gap-2">
+                        <td className="td-control flex gap-2">
                           <button
-                            className="bg-green-500 text-white px-2 py-2 rounded-lg "
+                            className="button-edit "
                             onClick={() => Editorder(id)}
                           >
                             <FaEdit />
                           </button>
                           <button
-                            className="bg-red-500 text-white px-2 py-2 rounded-lg mr-0"
+                            className="button-delete"
                             onClick={() => removeOrder(id)}
                           >
                             <FaTrash />

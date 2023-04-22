@@ -36,8 +36,10 @@ const Userlist = () => {
         return;
       }
       // check password and confirm password
-      if (password !== confirmPassword) {
-        alert("Password and Confirm Password must be same");
+      if (password.length < 4 || password !== confirmPassword) {
+        alert(
+          "Password and Confirm Password must be same or password digits less then 4"
+        );
         return;
       }
       setUsers([...users, newUser]);

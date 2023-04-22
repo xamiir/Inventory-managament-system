@@ -106,7 +106,7 @@ const Customers = () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            <div className="mb-4 flex justify-between ">
+            <div className="div5 ">
               <label htmlFor="description" className="sr-only">
                 Address
               </label>
