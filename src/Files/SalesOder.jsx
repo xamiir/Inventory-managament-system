@@ -9,7 +9,6 @@ const SalesOrder = () => {
   const [quantity, setQuantity] = useState("");
   const [orginalPrice, setOrginalPrice] = useState("");
   const [discount, setDiscount] = useState("");
-  const [totalPrice, setTotalPrice] = useState("");
   const [SalesOrder, setSalesOrder] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState(0);
@@ -25,7 +24,6 @@ const SalesOrder = () => {
         quantity,
         orginalPrice,
         discount,
-        totalPrice,
       };
       if (
         customerName === "" ||
@@ -33,7 +31,7 @@ const SalesOrder = () => {
         productName === "" ||
         quantity === "" ||
         orginalPrice === "" ||
-        discount == ""
+        discount === ""
       ) {
         alert("Please fill all the fields");
         return;
@@ -45,7 +43,6 @@ const SalesOrder = () => {
       setQuantity("");
       setOrginalPrice("");
       setDiscount("");
-      setTotalPrice("");
     } else {
       const newSalesorder = SalesOrder.map((item) => {
         if (item.id === id) {
@@ -57,7 +54,6 @@ const SalesOrder = () => {
             quantity,
             orginalPrice,
             discount,
-            totalPrice,
           };
         }
         return item;
@@ -69,7 +65,7 @@ const SalesOrder = () => {
       setQuantity("");
       setOrginalPrice("");
       setDiscount("");
-      setTotalPrice("");
+
       setIsEdit(false);
       setId(0);
     }
@@ -90,7 +86,6 @@ const SalesOrder = () => {
       quantity,
       orginalPrice,
       discount,
-      totalPrice,
     } = newSalesorder;
     setCustomerName(customerName);
     setProductName(productName);
@@ -98,12 +93,11 @@ const SalesOrder = () => {
     setQuantity(quantity);
     setOrginalPrice(orginalPrice);
     setDiscount(discount);
-    setTotalPrice(totalPrice);
     setIsEdit(true);
     setId(id);
   };
   return (
-    <div className="container ">
+    <div className={salesStyle.container}>
       <div className="child-container">
         <div className="div-container">
           <h1 className="tag-h1">Sales Order</h1>
@@ -214,7 +208,6 @@ const SalesOrder = () => {
                       quantity,
                       orginalPrice,
                       discount,
-                      totalPrice,
                     } = item;
                     return (
                       <tr key={id}>
