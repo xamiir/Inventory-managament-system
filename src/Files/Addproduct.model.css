@@ -1,45 +1,43 @@
-.container {
+.div1 {
   @apply bg-gray-100 h-screen;
 }
-.div-container {
+.div2 {
   @apply flex justify-center;
 }
-.child-container {
+.div3 {
   @apply w-full m-9 bg-white mt-10 p-6 rounded-lg;
 }
-.tag-h1 {
+.div4 {
   @apply text-3xl font-bold mb-1 text-center;
 }
-.form-control {
+.div5 {
   @apply mb-4 flex justify-between;
 }
-.input-control {
+.input1 {
   @apply bg-white border-2 w-[40%] p-2 rounded-lg flex justify-between;
 }
-.bnt-container {
-  @apply mb-4 flex justify-between;
-}
-.addButton-control {
+
+.addButton {
   @apply bg-blue-500 text-white px-4 py-2 rounded font-medium w-[10%];
 }
-.table-container {
+.tab {
   @apply flex justify-center;
 }
-.list-control {
+.list {
   @apply text-3xl font-bold text-gray-600  text-center mb-6;
 }
-.scrol-bal {
+.scrol {
   @apply overflow-y-auto h-48 w-full;
 }
-.table-control {
+.table1 {
   @apply table-auto w-full;
 }
-.th-control {
+.th1 {
+  @apply border px-4 py-2 bg-gray-100;
+}
+.td1 {
   @apply border px-4 py-2;
 }
-.td-control {
-  @apply border px-4 py-2;
-}
-.bnt-action {
+.bnt2 {
   @apply border px-4 py-2 flex justify-end gap-4;
 }

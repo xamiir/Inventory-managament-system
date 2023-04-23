@@ -34,7 +34,7 @@
 .td-control {
   @apply border px-4 py-2;
 }
-button-edit {
+.button-edit {
   @apply bg-green-500 text-white px-2 py-2 rounded-lg;
 }
 .button-delete {

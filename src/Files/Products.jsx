@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import productStyle from "./product.model.css";
+import addstyle from "./Addproduct.model.css";
 
 const Products = () => {
   const [name, setName] = useState("");
@@ -91,12 +91,12 @@ const Products = () => {
   };
 
   return (
-    <div className="container">
-      <div className="div-container">
-        <div className="child-container">
-          <h1 className="tag-h1">Products</h1>
+    <div className="div1">
+      <div className="div2">
+        <div className="div3">
+          <h1 className="div4">Products</h1>
           <form onSubmit={handleSubmit}>
-            <div className="form-control  ">
+            <div className="div5">
               <label htmlFor="name" className="sr-only">
                 Product Name
               </label>
@@ -105,7 +105,7 @@ const Products = () => {
                 name="product name"
                 id="product Name"
                 placeholder="Enter Product Name"
-                className="input-control"
+                className="input1"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -117,12 +117,12 @@ const Products = () => {
                 name="price"
                 id="price"
                 placeholder="Enter Price"
-                className="input-control"
+                className="input1"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
             </div>
-            <div className="mb-4 flex justify-between  ">
+            <div className="div5">
               <label htmlFor="description" className="sr-only">
                 Description
               </label>
@@ -131,7 +131,7 @@ const Products = () => {
                 name="description"
                 id="description"
                 placeholder="Enter Description"
-                className="input-control"
+                className="input1"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -143,12 +143,12 @@ const Products = () => {
                 name="quantity"
                 id="quantity"
                 placeholder="Enter Quantity"
-                className="input-control"
+                className="input1"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </div>
-            <div className="mb-4 flex justify-between  ">
+            <div className="div5">
               <label htmlFor="Category" className="sr-only">
                 Category
               </label>
@@ -157,7 +157,7 @@ const Products = () => {
                 name="Category"
                 id="Category"
                 placeholder="Enter Category"
-                className="input-control"
+                className="input1"
                 value={Category}
                 onChange={(e) => setCategory(e.target.value)}
               />
@@ -169,31 +169,31 @@ const Products = () => {
                 name="totalPrice"
                 id="totalPrice"
                 placeholder="Enter Total Price"
-                className="input-control"
+                className="input1"
                 value={quantity * price}
                 onChange={(e) => setTotalPrice(e.target.value)}
               />
             </div>
-            <div className="bnt-container  ">
-              <button type="submit" className="addButton-control">
+            <div className="div5">
+              <button type="submit" className="addButton">
                 {isEdit ? "Edit" : "Add"}
               </button>
             </div>
           </form>
-          <div className="table-container">
+          <div className="tab">
             <div className="w-full">
-              <h1 className="list-control">Product List</h1>
-              <div className="scrol-bal">
-                <table className="table-control">
+              <h1 className="list">Product List</h1>
+              <div className="scrol">
+                <table className="table1">
                   <thead>
                     <tr>
-                      <th className="th-control">Product Name</th>
-                      <th className="th-control">Price</th>
-                      <th className="th-control">Description</th>
-                      <th className="th-control">Quantity</th>
-                      <th className="th-control">Category</th>
-                      <th className="th-control">Total Price</th>
-                      <th className="th-control">Action</th>
+                      <th className="th1">Product Name</th>
+                      <th className="th1">Price</th>
+                      <th className="th1">Description</th>
+                      <th className="th1">Quantity</th>
+                      <th className="th1">Category</th>
+                      <th className="th1">Total Price</th>
+                      <th className="th1">Action</th>
                     </tr>
                   </thead>
 
@@ -210,13 +210,13 @@ const Products = () => {
                       } = item;
                       return (
                         <tr key={id}>
-                          <td className="td-control">{name}</td>
-                          <td className="td-control">{price}</td>
-                          <td className="td-control">{description}</td>
-                          <td className="td-control">{quantity}</td>
-                          <td className="td-control">{Category}</td>
-                          <td className="td-control">{price * quantity}</td>
-                          <td className="bnt-action">
+                          <td className="td1">{name}</td>
+                          <td className="td1">{price}</td>
+                          <td className="td1">{description}</td>
+                          <td className="td1">{quantity}</td>
+                          <td className="td1">{Category}</td>
+                          <td className="td1">{price * quantity}</td>
+                          <td className="bnt2">
                             <button
                               className="bg-green-500 text-white px-4 py-2 rounded font-medium"
                               onClick={() => editProduct(id)}

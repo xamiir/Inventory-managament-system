@@ -115,6 +115,7 @@ const SalesOrder = () => {
                   type="text"
                   name="customerName"
                   placeholder="Enter Customer Name"
+                  autocomplete="on"
                   className="input-control"
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
