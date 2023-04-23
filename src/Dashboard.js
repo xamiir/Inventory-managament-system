@@ -17,7 +17,7 @@ import Userlist from "./Files/Userlist";
 const Dashboard = () => {
   return (
     <BrowserRouter>
-      <div className="bg-white ">
+      <div className="bg-white h-screen ">
         <div
           className="bg-gray-800 "
           style={{ width: "20%", height: "100vh", float: "left" }}
