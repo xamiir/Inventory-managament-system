@@ -171,7 +171,7 @@ const Products = () => {
                 /> */}
               </div>
               <div className="div5">
-                <button type="submit" className="addButton">
+                <button type="submit" className="Addbnt bg-blue-500">
                   {isEdit ? "Edit" : "Add"}
                 </button>
               </div>

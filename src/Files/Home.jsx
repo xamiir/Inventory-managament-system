@@ -1,6 +1,6 @@
 const Report = () => {
   return (
-    <div className="container">
+    <div className=" bg-gray-100">
       <div className="flex flex-wrap justify-center items-center">
         <div className="w-full lg:w-1/3 xl:w-1/3 p-3">
           <div className="bg-white border rounded shadow">
@@ -37,7 +37,7 @@ const Report = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-1/3 xl:w-1/3 p-3">
+        <div className="w-full  lg:w-1/3 xl:w-1/3 p-3 ">
           <div className="bg-white border rounded shadow">
             <div className="border-b p-3">
               <h5 className="font-bold uppercase text-gray-600">

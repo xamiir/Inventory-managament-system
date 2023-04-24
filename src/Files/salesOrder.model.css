@@ -1,11 +1,11 @@
 .container {
-  @apply bg-gray-100 h-screen;
+  @apply bg-gray-100 h-screen w-full;
 }
 .child-container {
   @apply flex justify-center;
 }
 .div-container {
-  @apply w-full m-9 bg-white mt-10 p-6 rounded-lg;
+  @apply w-full m-9 bg-white mt-10 mr-4 p-6 rounded-lg;
 }
 .tag-h1 {
   @apply text-2xl font-bold mb-5 text-center;
