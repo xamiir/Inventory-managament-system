@@ -1,5 +1,5 @@
 .container {
-  @apply bg-gray-100 h-screen w-full;
+  @apply bg-gray-100 h-screen;
 }
 .child-container {
   @apply flex justify-center;

@@ -98,7 +98,7 @@ const SalesOrder = () => {
   };
   return (
     <div className={salesStyle.ok}>
-      <div className="container">
+      <div className="div1">
         <div className="child-container">
           <div className="div-container">
             <h1 className="tag-h1">Sales Order</h1>
