@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { FaEdit, FaTrash } from "react-icons/fa";
 import addStyle from "./AddCustomer.model.css";
@@ -11,6 +11,7 @@ const Customers = () => {
   const [Customer, setCustomer] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState(0);
+  const [model, setModel] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,130 +71,152 @@ const Customers = () => {
     setIsEdit(true);
     setId(id);
   };
-  useEffect(() => {
-    localStorage.getItem("CustomerKey", JSON.stringify(Customer));
-  }, [Customer]);
+
+  const openModel = () => {
+    setModel(true);
+  };
+
+  const closeModel = () => {
+    setModel(false);
+  };
 
   return (
     <div className={addStyle.pl}>
-      <div className="div1">
-        <div className="div2">
-          <div className="div3">
-            <h1 className="div4">Customer</h1>
-            <form action="" onSubmit={handleSubmit}>
-              <div className="div5">
-                <label htmlFor="name" className="sr-only">
-                  Customer Name
+      <div className="div7">
+        <div className="div8">
+          <h1 className="div9">Customer List</h1>
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={openModel}
+              className="bg-green-500 text-white px-4 py-2 rounded font-medium mr-2"
+            >
+              Add User
+            </button>
+          </div>
+          <div className="div10">
+            <table className="table-control">
+              <thead>
+                <tr>
+                  <th className="tr-control">Customer Name</th>
+                  <th className="tr-control">Phone Number</th>
+                  <th className="tr-control">Address</th>
+                  <th className="tr-control">Email</th>
+                  <th className="tr-control">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {Customer.map((item) => {
+                  const { id, CustomerName, PhoneNumber, Address, Email } =
+                    item;
+                  return (
+                    <tr key={id}>
+                      <td className="td-control">{CustomerName}</td>
+                      <td className="td-control">{PhoneNumber}</td>
+                      <td className="td-control">{Address}</td>
+                      <td className="td-control">{Email}</td>
+                      <td className="bnt-control">
+                        <button
+                          className="edit-button"
+                          onClick={() => {
+                            openModel();
+                            editCustomer(id);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="delete-button"
+                          onClick={() => removeCustomer(id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {model && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg w-1/3">
+            <div className="flex justify-end">
+              <button onClick={closeModel} className="text-3xl">
+                &times;
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="px-8 py-6">
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  CustomerName
                 </label>
                 <input
                   type="text"
-                  name="CustomerName"
-                  id="CustomerName"
-                  placeholder="Enter Customer Name"
-                  className="input-control"
                   value={CustomerName}
                   onChange={(e) => setCustomerName(e.target.value)}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter Name"
                 />
-                <label htmlFor="price" className="sr-only">
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
                   Phone Number
                 </label>
                 <input
                   type="text"
-                  name="PhoneNumber"
-                  id="PhoneNumber"
-                  placeholder="Enter Phone Number"
-                  className="input-control"
                   value={PhoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter Phone Number"
                 />
               </div>
-              <div className="div5 ">
-                <label htmlFor="description" className="sr-only">
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
                   Address
                 </label>
                 <input
                   type="text"
-                  name="Address"
-                  id="Address"
-                  placeholder="Enter Address"
-                  className="input-control"
                   value={Address}
                   onChange={(e) => setAddress(e.target.value)}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter Address"
                 />
-                <label htmlFor="description" className="sr-only">
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
                   Email
                 </label>
                 <input
-                  type="text"
-                  name="Email"
-                  id="Email"
-                  placeholder="Enter Email"
-                  className="input-control"
+                  type="email"
                   value={Email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter Email"
                 />
               </div>
-              <div className="div6 ">
-                <button className="addButton">{isEdit ? "Edit" : "Add"}</button>
+
+              <div className="flex items-center justify-between">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  type="submit"
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={closeModel}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  type="button"
+                >
+                  Cancel
+                </button>
               </div>
             </form>
-
-            <div className="div7">
-              <div className="div8">
-                <h1 className="div9">Customer List</h1>
-                <div className="div10">
-                  <table className="table-control">
-                    <thead>
-                      <tr>
-                        <th className="tr-control">Customer Name</th>
-                        <th className="tr-control">Phone Number</th>
-                        <th className="tr-control">Address</th>
-                        <th className="tr-control">Email</th>
-                        <th className="tr-control">Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {Customer.map((item) => {
-                        const {
-                          id,
-                          CustomerName,
-                          PhoneNumber,
-                          Address,
-                          Email,
-                        } = item;
-                        return (
-                          <tr key={id}>
-                            <td className="td-control">{CustomerName}</td>
-                            <td className="td-control">{PhoneNumber}</td>
-                            <td className="td-control">{Address}</td>
-                            <td className="td-control">{Email}</td>
-                            <td className="bnt-control">
-                              <button
-                                className="edit-button"
-                                onClick={() => editCustomer(id)}
-                              >
-                                <FaEdit />
-                              </button>
-                              <button
-                                className="delete-button"
-                                onClick={() => removeCustomer(id)}
-                              >
-                                <FaTrash />
-                                {}
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

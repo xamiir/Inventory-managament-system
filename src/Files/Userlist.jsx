@@ -36,7 +36,7 @@ const Userlist = () => {
         alert("Please fill all the fields");
         return;
       }
-      // check password and confirm password
+
       if (password.length < 4 || password !== confirmPassword) {
         alert(
           "Password and Confirm Password must be same or password digits less then 4"
@@ -106,8 +106,8 @@ const Userlist = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="w-full ">
+    <div className="flex justify-center bg-gray-100 h-screen">
+      <div className="w-full m-9 bg-white ">
         <h1 className="text-3xl font-bold text-gray-600  text-center ">
           Users List
         </h1>
@@ -119,8 +119,8 @@ const Userlist = () => {
             Add User
           </button>
         </div>
-        <div className="overflow-y-auto h-96 w-full">
-          <table className="w-full text-left table-auto">
+        <div className=" mr-3 w-full mb-8  rounded-lg shadow-lg overflow-y-auto h-[80%]">
+          <table className="w-full m-5 text-left table-auto ">
             <thead>
               <tr className="bg-gray-100">
                 <th className="px-4 py-2">Name</th>
@@ -144,7 +144,10 @@ const Userlist = () => {
                     <td className="border px-4 py-2">{password}</td>
                     <td className="border px-4 py-2">
                       <button
-                        onClick={isEdit ? openModel : editUser(id)}
+                        onClick={() => {
+                          openModel();
+                          editUser(id);
+                        }}
                         className="bg-green-500 text-white px-4 py-2 rounded font-medium"
                       >
                         <FaEdit />

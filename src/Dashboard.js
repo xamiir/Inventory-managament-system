@@ -7,6 +7,7 @@ import {
   FaBoxOpen,
   FaChartBar,
 } from "react-icons/fa";
+
 import Products from "./Files/Products";
 import Customers from "./Files/Customers";
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
       <div className="bg-white h-screen ">
         <div
           className="bg-gray-800 "
-          style={{ width: "20%", height: "100vh", float: "left" }}
+          style={{ width: "15%", height: "100vh", float: "left" }}
         >
           <nav className="bg-gray-800 ">
             <div className="px-2 space-y-3 ">
