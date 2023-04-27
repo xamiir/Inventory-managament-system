@@ -18,75 +18,100 @@ import Userlist from "./Files/Userlist";
 const Dashboard = () => {
   return (
     <BrowserRouter>
-      <div className="bg-white h-screen ">
-        <div
-          className="bg-gray-800 "
-          style={{ width: "15%", height: "100vh", float: "left" }}
-        >
-          <nav className="bg-gray-800 ">
-            <div className="px-2 space-y-3 ">
-              <Link
-                href="#"
-                className="bg-gray-900 text-white block px-3 py-2 rounded-md  font-medium text-2xl"
-                aria-current="page"
-              >
-                {" "}
-                Dashboard{" "}
-              </Link>
-              <Link
-                to="/"
-                className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
-              >
-                <FaHome className="text-2xl" />
-                <span>Home</span>
-              </Link>
-              <Link
-                to="/customers"
-                className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
-              >
-                <FaUserPlus className="text-2xl" />
-                <span>Customers</span>
-              </Link>
-              <Link
-                to="/salesorder"
-                className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
-              >
-                <FaFileInvoice className="text-2xl" />
-                <span>Sales Order</span>
-              </Link>
-              <Link
-                to="/Products"
-                className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
-              >
-                <FaBoxOpen className="text-2xl" />
-                <span>Products</span>
-              </Link>
-              <Link
-                to="/Userlist"
-                className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
-              >
-                <FaUser className="text-2xl" />
-                <span> User's</span>
-              </Link>
-              <Link
-                to="/Report"
-                className="text-white flex items-center space-x-2 px-2 py-2 rounded-md text-sm font-medium hover:bg-gray-700 hover:text-white"
-              >
-                <FaChartBar className="text-2xl" />
-                <span>Reports</span>
-              </Link>
-            </div>
-          </nav>
-        </div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/salesorder" element={<SalesOrder />} />
-          <Route path="/Products" element={<Products />} />
-          {/* <Route path="/adduser" element={<Adduser />} /> */}
+      <div className="flex h-screen bg-gray-200">
+        <div className="flex flex-col flex-shrink-0 bg-gray-800 text-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+          <div
+            className="bg-gray-900 text-white block px-3 py-2 rounded-md  font-medium text-2xl"
+            aria-current="page"
+          >
+            <span className="font-semibold text-xl tracking-tight">
+              Dashboard
+            </span>
+          </div>
+          <div className="flex flex-col justify-between flex-1 h-0 overflow-y-auto">
+            <ul className="flex flex-col py-4 space-y-1">
+              <li className="px-5">
+                <Link
+                  to="/"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaHome className="w-5 h-5" />
+                  <span className="ml-2">Home</span>
+                </Link>
+              </li>
+              <li className="px-5">
+                <Link
+                  to="/userlist"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaUser className="w-5 h-5" />
+                  <span className="ml-2">User List</span>
+                </Link>
+              </li>
+              <li className="px-5">
+                <Link
+                  to="/adduser"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaUserPlus className="w-5 h-5" />
+                  <span className="ml-2">Add User</span>
+                </Link>
+              </li>
 
-          <Route path="/Userlist" element={<Userlist />} />
-        </Routes>
+              <li className="px-5">
+                <Link
+                  to="/products"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaBoxOpen className="w-5 h-5" />
+                  <span className="ml-2">Products</span>
+                </Link>
+              </li>
+              <li className="px-5">
+                <Link
+                  to="/customers"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaUserPlus className="w-5 h-5" />
+                  <span className="ml-2">Customers</span>
+                </Link>
+              </li>
+              <li className="px-5">
+                <Link
+                  to="/salesorder"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaFileInvoice className="w-5 h-5" />
+                  <span className="ml-2">Sales Order</span>
+                </Link>
+              </li>
+              <li className="px-5">
+                <Link
+                  to="/reports"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaChartBar className="w-5 h-5" />
+                  <span className="ml-2">Reports</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-col flex-1">
+          <div className="flex flex-col w-full h-full overflow-x-hidden border-t">
+            <main className="flex flex-col flex-1">
+              <div className="flex flex-col flex-1">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/userlist" element={<Userlist />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/salesorder" element={<SalesOrder />} />
+                </Routes>
+              </div>
+            </main>
+          </div>
+        </div>
       </div>
     </BrowserRouter>
   );

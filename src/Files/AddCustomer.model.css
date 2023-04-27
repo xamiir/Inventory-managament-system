@@ -32,7 +32,7 @@
   @apply text-3xl font-bold mb-1 text-center;
 }
 .div10 {
-  @apply overflow-y-auto h-48;
+  @apply mb-8  rounded-lg shadow-lg overflow-y-auto h-[80%];
 }
 .table-control {
   @apply table-auto w-full;
