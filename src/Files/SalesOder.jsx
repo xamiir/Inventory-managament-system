@@ -179,7 +179,7 @@ const SalesOrder = () => {
               <div className="bnt-contair ">
                 <div className="bnt-con">
                   <button className="button-control">
-                    {isEdit ? "update" : "AddCart"}
+                    {isEdit ? "update" : "sales"}
                   </button>
                 </div>
               </div>
