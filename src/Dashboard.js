@@ -7,6 +7,7 @@ import {
   FaBoxOpen,
   FaChartBar,
   FaSignOutAlt,
+  FaListAlt,
 } from "react-icons/fa";
 
 import Products from "./Files/Products";
@@ -15,6 +16,7 @@ import Customers from "./Files/Customers";
 import SalesOrder from "./Files/SalesOder";
 import Home from "./Files/Home";
 import Userlist from "./Files/Userlist";
+import Category from "./Files/Category";
 
 const Dashboard = () => {
   return (
@@ -56,6 +58,16 @@ const Dashboard = () => {
                 >
                   <FaBoxOpen className="w-5 h-5" />
                   <span className="ml-2">Products</span>
+                </Link>
+              </li>
+
+              <li className="px-5">
+                <Link
+                  to="/category"
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                >
+                  <FaListAlt className="w-5 h-5" />
+                  <span className="ml-2">Category</span>
                 </Link>
               </li>
               <li className="px-5">
@@ -106,6 +118,7 @@ const Dashboard = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/userlist" element={<Userlist />} />
                   <Route path="/products" element={<Products />} />
+                  <Route path="/category" element={<Category />} />
                   <Route path="/customers" element={<Customers />} />
                   <Route path="/salesorder" element={<SalesOrder />} />
                 </Routes>
