@@ -6,6 +6,7 @@ import {
   FaFileInvoice,
   FaBoxOpen,
   FaChartBar,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 import Products from "./Files/Products";
@@ -45,19 +46,9 @@ const Dashboard = () => {
                   className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
                 >
                   <FaUser className="w-5 h-5" />
-                  <span className="ml-2">User List</span>
+                  <span className="ml-2">Users</span>
                 </Link>
               </li>
-              <li className="px-5">
-                <Link
-                  to="/adduser"
-                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
-                >
-                  <FaUserPlus className="w-5 h-5" />
-                  <span className="ml-2">Add User</span>
-                </Link>
-              </li>
-
               <li className="px-5">
                 <Link
                   to="/products"
@@ -95,6 +86,16 @@ const Dashboard = () => {
                 </Link>
               </li>
             </ul>
+
+            <div className="px-5 mt-5">
+              <button
+                type="button"
+                className="flex items-center justify-center px-2 py-2 text-sm font-medium leading-snug text-red-500 rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+              >
+                <FaSignOutAlt className="w-5 h-5" />
+                <span className="ml-2">Logout</span>
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex flex-col flex-1">

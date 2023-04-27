@@ -168,7 +168,6 @@ const Userlist = () => {
           </table>
         </div>
       </div>
-
       {model && (
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg w-1/3">
