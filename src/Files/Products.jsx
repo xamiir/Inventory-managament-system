@@ -1,238 +1,204 @@
-import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import addstyle from "./Addproduct.model.css";
+// import { useState, useContext } from "react";
+import { useState } from "react";
+
+import { toast } from "react-toastify";
+// import Contextapi, { useStore } from "./Contextapi";
+import { useStore } from "./Contextapi";
+import {
+  fetchCategories,
+  createProduct,
+  updateProduct,
+} from "../services/api-calls";
+//import { RouterProvider } from "react-router-dom";
+import useSWR from "swr";
+import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Products = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [Category, setCategory] = useState("");
-  const [Product, setProduct] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [id, setId] = useState(0);
+  const { data: categories, error } = useSWR("/category", fetchCategories);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const params = useParams();
+  const { products, dispatch, mutateProducts } = useStore();
+  const isEdit = pathname.includes("edit");
+  const currentProduct =
+    products?.length > 0 && products.find((item) => item._id === params.id);
 
-  const handleSubmit = (e) => {
+  const [productNames, setProductNames] = useState(
+    isEdit ? currentProduct?.name : ""
+  );
+  const [productPrice, setProductPrice] = useState(
+    isEdit ? currentProduct?.cost : ""
+  );
+  const [productQuantity, setProductQuantity] = useState(
+    isEdit ? currentProduct?.quantity : ""
+  );
+  const [productDescription, setProductDescription] = useState(
+    isEdit ? currentProduct?.description : ""
+  );
+  const currentCategory = isEdit ? currentProduct?.category?._id : "";
+
+  //const [productCategory, setProductCategory] = useState();
+  const [productCategory, setProductCategory] = useState(currentCategory);
+
+  // const { product, setProduct } = useContext(Contextapi);
+  const addProduct = async (e) => {
     e.preventDefault();
-    if (!isEdit) {
-      const newProduct = {
-        id: new Date().getTime().toString(),
-        name,
-        price,
-        description,
-        quantity,
-        Category,
-      };
-      if (
-        name === "" ||
-        price === "" ||
-        description === "" ||
-        quantity === "" ||
-        Category === ""
-      ) {
-        alert("Please fill all the fields");
-        return;
-      }
-      setProduct([...Product, newProduct]);
-      setName("");
-      setPrice("");
-      setDescription("");
-      setQuantity("");
-      setCategory("");
-    } else {
-      const newProduct = Product.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            name,
-            price,
-            description,
-            quantity,
-            Category,
-          };
-        }
-        return item;
-      });
-      setProduct(newProduct);
-      setName("");
-      setPrice("");
-      setDescription("");
-      setQuantity("");
-      setCategory("");
-
-      setIsEdit(false);
-      setId(0);
+    if (
+      !productNames ||
+      !productPrice ||
+      !productQuantity ||
+      !productDescription ||
+      !productCategory
+    ) {
+      return toast.error("Please Fill All Fields");
     }
-  };
-  const removeProduct = (id) => {
-    if (!window.confirm("Are you sure you want to delete this Product?")) {
-      return;
-    }
-    const newProduct = Product.filter((item) => item.id !== id);
-    setProduct(newProduct);
+
+    const data = {
+      name: productNames,
+      cost: productPrice,
+      quantity: productQuantity,
+      description: productDescription,
+      category: productCategory,
+    };
+    const res = !isEdit
+      ? await createProduct(data)
+      : await updateProduct(params.id, data);
+
+    toast.success(res.message);
+    dispatch({ type: "ADD_PRODUCTS", payload: res });
+    navigate("/ProductList");
+    mutateProducts();
+    resetForm();
   };
 
-  const editProduct = (id) => {
-    const newProduct = Product.find((item) => item.id === id);
-    const { name, price, description, quantity, Category } = newProduct;
-    setName(name);
-    setPrice(price);
-    setDescription(description);
-    setQuantity(quantity);
-    setCategory(Category);
-
-    setIsEdit(true);
-    setId(id);
+  const resetForm = () => {
+    setProductNames("");
+    setProductPrice("");
+    setProductQuantity("");
+    setProductDescription("");
+    setProductCategory("");
   };
+
+  if (error) {
+    return (
+      <h1>
+        {Object.values(error).map((item, i) => {
+          if (typeof item === "object") {
+            return <p key={i}>{item.message}</p>;
+          }
+          return <p key={i}>{item}</p>;
+        })}
+      </h1>
+    );
+  }
 
   return (
-    <div className={addstyle.lk}>
-      <div className="div1">
-        <div className="div2">
-          <div className="div3">
-            <h1 className="div4">Products</h1>
-            <form onSubmit={handleSubmit}>
-              <div className="div5">
-                <label htmlFor="name" className="sr-only">
-                  Product Name
-                </label>
-                <input
-                  type="text"
-                  name="product name"
-                  id="product Name"
-                  placeholder="Enter Product Name"
-                  className="input1"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <label htmlFor="price" className="sr-only">
-                  Price
-                </label>
-                <input
-                  type="text"
-                  name="price"
-                  id="price"
-                  placeholder="Enter Price"
-                  className="input1"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
+    <div className="container mx-auto">
+      <div className="flex justify-center px-6 my-12">
+        <div className="w-full xl:w-3/4 lg:w-11/12 flex">
+          <div className="w-full h-auto bg-gray-400 hidden lg:block lg:w-1/2 bg-cover rounded-l-lg">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvH1H5GETy3tbS2IImN46BT7SUMN25z06rfRYSQk93Dvjh7fIGHRKp1BFS4vf2iq17MhQ&usqp=CAU"
+              alt=""
+              className="object-cover w-full h-full hidden lg:block"
+            />
+          </div>
+          <div className="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
+            <h3 className="pt-4 text-2xl text-center">
+              {isEdit ? "Edit" : "Add"} Product{!isEdit ? "s" : ""}
+              {" - "}
+              {productNames}
+            </h3>
+            <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+              <div className="mb-4 md:flex md:justify-between">
+                <div className="mb-4 md:mr-2 md:mb-0">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
+                    Product Name
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    type="text"
+                    placeholder="Product Name"
+                    value={productNames}
+                    onChange={(e) => setProductNames(e.target.value)}
+                  />
+                </div>
+                <div className="md:ml-2">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
+                    Product Price
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    type="number"
+                    value={productPrice}
+                    placeholder="Product Price"
+                    onChange={(e) => setProductPrice(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="div5">
-                <label htmlFor="description" className="sr-only">
-                  Description
-                </label>
-                <input
-                  type="text"
-                  name="description"
-                  id="description"
-                  placeholder="Enter Description"
-                  className="input1"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-                <label htmlFor="quantity" className="sr-only">
-                  Quantity
-                </label>
-                <input
-                  type="text"
-                  name="quantity"
-                  id="quantity"
-                  placeholder="Enter Quantity"
-                  className="input1"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
+              <div className="mb-4 md:flex md:justify-between">
+                <div className="mb-4 md:mr-2 md:mb-0">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
+                    Product Quantity
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    type="number"
+                    value={productQuantity}
+                    placeholder="Product Quantity"
+                    onChange={(e) => setProductQuantity(e.target.value)}
+                  />
+                </div>
+                <div className="md:ml-2">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
+                    Product Description
+                  </label>
+                  <input
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    type="text"
+                    value={productDescription}
+                    placeholder="Product Description"
+                    onChange={(e) => setProductDescription(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="div5">
-                <label htmlFor="Category" className="sr-only">
-                  Category
-                </label>
-                <input
-                  type="text"
-                  name="Category"
-                  id="Category"
-                  placeholder="Enter Category"
-                  className="input1"
-                  value={Category}
-                  onChange={(e) => setCategory(e.target.value)}
-                />
-                {/* <label htmlFor="totalPrice" className="sr-only">
-                  Total Price
-                </label>
-                <input
-                  type="text"
-                  name="totalPrice"
-                  id="totalPrice"
-                  placeholder="Enter Total Price"
-                  className="input1"
-                  value={quantity * price}
-                  onChange={(e) => setTotalPrice(e.target.value)}
-                /> */}
+              <div className="mb-4 md:flex md:justify-between">
+                <div className="mb-4 md:mr-2 md:mb-0">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
+                    Product Category
+                  </label>
+                  {/* <input
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    type="text"
+                    value={productCategory}
+                    placeholder="Product Category"
+                    onChange={(e) => setProductCategory(e.target.value)}
+                  /> */}
+
+                  <select
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    value={currentCategory || productCategory}
+                    onChange={(e) => setProductCategory(e.target.value)}
+                  >
+                    {categories?.map((category) => (
+                      <option key={category.name} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div className="div5">
-                <button type="submit" className="Addbnt bg-blue-500">
-                  {isEdit ? "Edit" : "Add"}
+              <div className="mb-6 text-center">
+                <button
+                  className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                  type="button"
+                  onClick={addProduct}
+                >
+                  {isEdit ? "Edit" : "Add"} Product
                 </button>
               </div>
             </form>
-            <div className="tab">
-              <div className="w-full">
-                <h1 className="list">Product List</h1>
-                <div className="scrol">
-                  <table className="table1">
-                    <thead>
-                      <tr>
-                        <th className="th1">Product Name</th>
-                        <th className="th1">Price</th>
-                        <th className="th1">Description</th>
-                        <th className="th1">Quantity</th>
-                        <th className="th1">Category</th>
-                        <th className="th1">Total Price</th>
-                        <th className="th1">Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {Product.map((item) => {
-                        const {
-                          id,
-                          name,
-                          price,
-                          description,
-                          quantity,
-                          Category,
-                        } = item;
-                        return (
-                          <tr key={id}>
-                            <td className="td1">{name}</td>
-                            <td className="td1">{price}</td>
-                            <td className="td1">{description}</td>
-                            <td className="td1">{quantity}</td>
-                            <td className="td1">{Category}</td>
-                            <td className="td1">{price * quantity}</td>
-                            <td className="bnt2">
-                              <button
-                                className="bg-green-500 text-white px-4 py-2 rounded font-medium"
-                                onClick={() => editProduct(id)}
-                              >
-                                <FaEdit />
-                              </button>
-                              <button
-                                className="bg-red-500 text-white px-4 py-2 rounded font-medium"
-                                onClick={() => removeProduct(id)}
-                              >
-                                <FaTrash />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -1,61 +1,65 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import {
+  fetchCategories,
+  createCategory,
+  editCategory,
+  deleteCategory,
+} from "../services/api-calls";
+import useSWR from "swr";
+import { toast } from "react-toastify";
 
 const Category = () => {
+  const { data, isLoading, error, mutate } = useSWR(
+    "/category",
+    fetchCategories
+  );
+  // const [categorys, setCategorys] = useState(data);
   const [categoryName, setCategoryName] = useState("");
   const [categoryDate, setCategoryDate] = useState("");
-  const [category, setCategory] = useState([]);
+  // const [category, setCategory] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState(0);
   const [model, setModel] = useState(false);
+  const [query, setQuery] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isEdit) {
-      const newCategory = {
-        id: new Date().getTime().toString(),
-        categoryName,
-        categoryDate,
-      };
-      if (categoryName === "" || categoryDate === "") {
-        alert("Please fill all the fields");
-        return;
-      }
-      setCategory([...category, newCategory]);
-      setCategoryName("");
-      setCategoryDate("");
-    } else {
-      const newCategory = category.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            categoryName,
-            categoryDate,
-          };
-        }
-        return item;
-      });
-      setCategory(newCategory);
-      setCategoryName("");
-      setCategoryDate("");
-      setIsEdit(false);
-    }
-  };
-
-  const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this record?")) {
+    if (!categoryName || !categoryDate) {
+      toast.error("Please fill all the fields");
       return;
     }
-    const newCategory = category.filter((item) => item.id !== id);
-    setCategory(newCategory);
+    try {
+      const values = {
+        name: categoryName,
+        date: categoryDate,
+      };
+      const res = isEdit
+        ? await editCategory(id, values)
+        : await createCategory(values);
+      mutate();
+      toast.success(res.message);
+      setCategoryName("");
+      setCategoryDate("");
+      setModel(false);
+      setIsEdit(false);
+      setId(0);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  const handleEdit = (id) => {
-    const editCategory = category.find((item) => item.id === id);
-    setIsEdit(true);
-    setId(id);
-    setCategoryName(editCategory.categoryName);
-    setCategoryDate(editCategory.categoryDate);
+  const removeCategory = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this category?")) {
+      return;
+    }
+    try {
+      const res = await deleteCategory(id);
+      mutate();
+      toast.success(res.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const handleModel = () => {
@@ -64,10 +68,26 @@ const Category = () => {
 
   const handleModelClose = () => {
     setModel(false);
+    setIsEdit(false);
   };
 
+  if (error) {
+    return (
+      <h1>
+        {Object.values(error).map((item, i) => {
+          if (typeof item === "object") {
+            return <p key={i}>{item.message}</p>;
+          }
+          return <p key={i}>{item}</p>;
+        })}
+      </h1>
+    );
+  }
+  const filtered = filteredArray(data, query);
   return (
-    <div className="flex justify-center bg-gray-100 h-screen">
+    // <div className="flex justify-center bg-gray-100 h-screen">
+
+    <div className="flex justify-center bg-gray-100 h-full">
       <div className="w-full m-9 bg-white ">
         <div className="flex justify-between items-center"></div>
         <div className="flex justify-between items-center ">
@@ -79,11 +99,24 @@ const Category = () => {
             Add Category
           </button>
         </div>
+        <div className="flex justify-between items-center m-4">
+          <div className="flex items-center">
+            <FaSearch className="text-gray-400 mr-2" />
+            <input
+              type="search"
+              placeholder="Search"
+              className="outline-none  border-b-2 border-gray-400 "
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col mt-5">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="table-auto min-w-full divide-y divide-gray-200 ">
                   <thead className="bg-gray-50">
                     <tr>
                       <th
@@ -113,46 +146,58 @@ const Category = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {category.map((item) => {
-                      const { id, categoryName, categoryDate } = item;
-                      return (
-                        <tr key={id}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
-                                  {categoryName}
+                    {isLoading ? (
+                      <tr>
+                        <td>Loading....</td>
+                      </tr>
+                    ) : (
+                      filtered?.map((item) => {
+                        const { _id, name, date } = item;
+                        return (
+                          <tr key={_id}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">
+                                    {name}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                              {categoryDate}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button
-                              onClick={() => {
-                                handleModel();
-                                handleEdit(id);
-                              }}
-                              className="text-green-600 hover:text-igreen-900 "
-                            >
-                              <FaEdit className="text-green-600 hover:text-igreen-900" />
-                            </button>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button
-                              onClick={() => handleDelete(id)}
-                              className="text-red-600 hover:text-indigo-900"
-                            >
-                              <FaTrash className="text-red-600 hover:text-indigo-900" />
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">
+                                {date}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button
+                                className="text-green-600 hover:text-igreen-900
+                            
+                              "
+                                // open model for edit
+                                onClick={() => {
+                                  setIsEdit(true);
+                                  setId(_id);
+                                  setCategoryName(name);
+                                  setCategoryDate(date);
+                                  setModel(true);
+                                }}
+                              >
+                                <FaEdit className="text-green-600 hover:text-igreen-900" />
+                              </button>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button
+                                onClick={() => removeCategory(_id)}
+                                className="text-red-600 hover:text-indigo-900"
+                              >
+                                <FaTrash className="text-red-600 hover:text-indigo-900" />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -264,7 +309,7 @@ const Category = () => {
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none  sm:ml-3 sm:w-auto sm:text-sm"
                 >
-                  Save
+                  {isEdit ? "Edit Category" : "Add Category"}
                 </button>
                 <button
                   onClick={handleModelClose}
@@ -280,5 +325,13 @@ const Category = () => {
       )}
     </div>
   );
+  function filteredArray(arr, query) {
+    return arr?.filter((el) => {
+      return (
+        el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        el.date.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
+    });
+  }
 };
 export default Category;

@@ -1,75 +1,73 @@
 import { useState } from "react";
 
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import addStyle from "./AddCustomer.model.css";
-
+import {
+  fetchCustomer,
+  createCustomer,
+  updateCustomerByID,
+  deleteCustomer,
+} from "../services/api-calls";
+import useSWR from "swr";
+import { toast } from "react-toastify";
 const Customers = () => {
+  const { data, isLoading, error, mutate } = useSWR(
+    "/customers",
+    fetchCustomer
+  );
+
   const [CustomerName, setCustomerName] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [Address, setAddress] = useState("");
   const [Email, setEmail] = useState("");
-  const [Customer, setCustomer] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState(0);
   const [model, setModel] = useState(false);
+  const [query, setQuery] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isEdit) {
-      const newCustomer = {
-        id: new Date().getTime().toString(),
-        CustomerName,
-        PhoneNumber,
-        Address,
-        Email,
+
+    if (!CustomerName || !PhoneNumber || !Address || !Email) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    try {
+      const values = {
+        name: CustomerName,
+        phone: PhoneNumber,
+        address: Address,
+        email: Email,
       };
-      if (
-        CustomerName === "" ||
-        PhoneNumber === "" ||
-        Address === "" ||
-        Email === ""
-      ) {
-        alert("Please fill all the fields");
-        return;
-      }
-      setCustomer([...Customer, newCustomer]);
+      const res = isEdit
+        ? await updateCustomerByID(id, values)
+        : await createCustomer(values);
+
+      toast.success(res.message);
+      mutate();
       setCustomerName("");
       setPhoneNumber("");
       setAddress("");
       setEmail("");
-    } else {
-      const newCustomer = Customer.map((item) => {
-        if (item.id === id) {
-          return { ...item, CustomerName, PhoneNumber, Address, Email };
-        }
-        return item;
-      });
-      setCustomer(newCustomer);
-      setCustomerName("");
-      setPhoneNumber("");
-      setAddress("");
-      setEmail("");
+      setModel(false);
       setIsEdit(false);
       setId(0);
+    } catch (error) {
+      toast.error(error.message);
     }
   };
-  const removeCustomer = (id) => {
+
+  const removeCustomer = async (id) => {
     if (!window.confirm("Are you sure you want to delete this Customer?")) {
       return;
     }
-    const newCustomer = Customer.filter((item) => item.id !== id);
-    setCustomer(newCustomer);
-  };
-
-  const editCustomer = (id) => {
-    const newCustomer = Customer.find((item) => item.id === id);
-    const { CustomerName, PhoneNumber, Address, Email } = newCustomer;
-    setCustomerName(CustomerName);
-    setPhoneNumber(PhoneNumber);
-    setAddress(Address);
-    setEmail(Email);
-    setIsEdit(true);
-    setId(id);
+    try {
+      const res = await deleteCustomer(id);
+      toast.success(res.message);
+      mutate();
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const openModel = () => {
@@ -77,17 +75,32 @@ const Customers = () => {
   };
 
   const closeModel = () => {
+    setIsEdit(false);
     setModel(false);
   };
+  const filteredData = filteredArray(data, query);
+
+  if (error) {
+    return (
+      <h1>
+        {Object.values(error).map((item, i) => {
+          if (typeof item === "object") {
+            return <p key={i}>{item.message}</p>;
+          }
+          return <p key={i}>{item}</p>;
+        })}
+      </h1>
+    );
+  }
 
   return (
-    <div className="flex justify-center bg-gray-100 h-screen">
-      <div className="w-full m-9 bg-white ">
+    <div className="flex justify-center">
+      <div className="w-full m-4  ">
         <div className={addStyle.pl}>
           <div className="div7">
             <div className="div8">
-              <h1 className="div9">Customer List</h1>
-              <div className="flex justify-end mb-4">
+              <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold">Customer List</h1>
                 <button
                   onClick={openModel}
                   className="bg-green-500 text-white px-4 py-2 rounded font-medium mr-2"
@@ -95,53 +108,107 @@ const Customers = () => {
                   Add newCustomer
                 </button>
               </div>
+              <div className="flex justify-between items-center m-4">
+                <div className="flex items-center">
+                  <FaSearch className="text-gray-400 mr-2" />
+                  <input
+                    type="search"
+                    placeholder="Search"
+                    className="outline-none  border-b-2 border-gray-400 "
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </div>
+              </div>
+
               <div className="div10">
                 <table className="table-control">
                   <thead>
                     <tr>
-                      <th className="tr-control">Customer Name</th>
-                      <th className="tr-control">Phone Number</th>
-                      <th className="tr-control">Address</th>
-                      <th className="tr-control">Email</th>
-                      <th className="tr-control">Action</th>
+                      <th className=" bg-gray-100 text-xs font-medium text-gray-500 uppercase tracking-wider text-left px-8 py-4">
+                        Customer Name
+                      </th>
+                      <th className="  bg-gray-100 text-xs font-medium text-gray-500 uppercase tracking-wider text-left px-8 py-4">
+                        Phone Number
+                      </th>
+                      <th className=" bg-gray-100 text-xs font-medium text-gray-500 uppercase tracking-wider text-left px-8 py-4">
+                        Address
+                      </th>
+                      <th className=" bg-gray-100 text-xs font-medium text-gray-500 uppercase tracking-wider text-left px-8 py-4">
+                        Email
+                      </th>
+                      <th className=" bg-gray-100 text-xs font-medium text-gray-500 uppercase tracking-wider text-left px-8 py-4">
+                        Action
+                      </th>
                     </tr>
                   </thead>
-
-                  <tbody>
-                    {Customer.map((item) => {
-                      const { id, CustomerName, PhoneNumber, Address, Email } =
-                        item;
-                      return (
-                        <tr key={id}>
-                          <td className="td-control">{CustomerName}</td>
-                          <td className="td-control">{PhoneNumber}</td>
-                          <td className="td-control">{Address}</td>
-                          <td className="td-control">{Email}</td>
-                          <td className="bnt-control">
-                            <button
-                              className="edit-button"
-                              onClick={() => {
-                                openModel();
-                                editCustomer(id);
-                              }}
-                            >
-                              <FaEdit />
-                            </button>
-                            <button
-                              className="delete-button"
-                              onClick={() => removeCustomer(id)}
-                            >
-                              <FaTrash />
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {isLoading ? (
+                      <tr>
+                        <td>Loading...</td>
+                      </tr>
+                    ) : (
+                      filteredData?.map((item) => {
+                        const { _id, name, phone, address, email } = item;
+                        return (
+                          <tr key={_id}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">
+                                    {name}
+                                  </div>
+                                  <div className="text-sm text-gray-500"></div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">
+                                {phone}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                {address}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {email}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <div className="flex flex-row">
+                                <button
+                                  className="text-green-500 hover:text-green-700  font-bold py-2 px-4 rounded-full"
+                                  onClick={() => {
+                                    setIsEdit(true);
+                                    setId(_id);
+                                    setCustomerName(name);
+                                    setPhoneNumber(phone);
+                                    setAddress(address);
+                                    setEmail(email);
+                                    openModel();
+                                  }}
+                                >
+                                  <FaEdit />
+                                </button>
+                                <button
+                                  className="text-red-500 hover:text-red-700  font-bold py-2 px-4 rounded-full"
+                                  onClick={() => removeCustomer(_id)}
+                                >
+                                  <FaTrash />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+
           {model && (
             <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
               <div className="bg-white rounded-lg w-1/3">
@@ -168,7 +235,7 @@ const Customers = () => {
                       Phone Number
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       value={PhoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -205,7 +272,7 @@ const Customers = () => {
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                       type="submit"
                     >
-                      Submit
+                      {isEdit ? "Update" : "Create"}
                     </button>
                     <button
                       onClick={closeModel}
@@ -223,6 +290,16 @@ const Customers = () => {
       </div>
     </div>
   );
+  function filteredArray(arr, query) {
+    return arr?.filter((el) => {
+      return (
+        el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        el.phone.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        el.address.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+        el.email.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
+    });
+  }
 };
 
 export default Customers;

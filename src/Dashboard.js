@@ -1,4 +1,6 @@
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+
 import {
   FaHome,
   FaUser,
@@ -9,6 +11,9 @@ import {
   FaSignOutAlt,
   FaListAlt,
 } from "react-icons/fa";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+//import Contextapi from "./Files/Contextapi";
 
 import Products from "./Files/Products";
 import Customers from "./Files/Customers";
@@ -17,8 +22,13 @@ import SalesOrder from "./Files/SalesOder";
 import Home from "./Files/Home";
 import Userlist from "./Files/Userlist";
 import Category from "./Files/Category";
+import ProductList from "./Files/ProductList";
+import Reports from "./Files/Report";
 
 const Dashboard = () => {
+  const [show, setShow] = useState(false);
+  // const [product, setProduct] = useState([]);
+
   return (
     <BrowserRouter>
       <div className="flex h-screen bg-gray-200">
@@ -31,6 +41,7 @@ const Dashboard = () => {
               Dashboard
             </span>
           </div>
+
           <div className="flex flex-col justify-between flex-1 h-0 overflow-y-auto">
             <ul className="flex flex-col py-4 space-y-1">
               <li className="px-5">
@@ -52,15 +63,36 @@ const Dashboard = () => {
                 </Link>
               </li>
               <li className="px-5">
-                <Link
-                  to="/products"
-                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                <button
+                  onClick={() => setShow(!show)}
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white focus:outline-none"
                 >
                   <FaBoxOpen className="w-5 h-5" />
                   <span className="ml-2">Products</span>
-                </Link>
+                </button>
+                {show ? (
+                  <ul className="flex flex-col py-4 space-y-1">
+                    <div className="px-5">
+                      <Link
+                        to="/products"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaBoxOpen className="w-5 h-5" />
+                        <span className="ml-2">Add Products</span>
+                      </Link>
+                    </div>
+                    <div className="px-5">
+                      <Link
+                        to="/ProductList"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaListAlt className="w-5 h-5" />
+                        <span className="ml-2">Products List</span>
+                      </Link>
+                    </div>
+                  </ul>
+                ) : null}
               </li>
-
               <li className="px-5">
                 <Link
                   to="/category"
@@ -114,19 +146,26 @@ const Dashboard = () => {
           <div className="flex flex-col w-full h-full overflow-x-hidden border-t">
             <main className="flex flex-col flex-1">
               <div className="flex flex-col flex-1">
+                {/* <Contextapi.Provider value={{ product, setProduct }}> */}
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/userlist" element={<Userlist />} />
                   <Route path="/products" element={<Products />} />
+                  <Route path="/edit-product/:id" element={<Products />} />
+                  <Route path="/ProductList" element={<ProductList />} />
                   <Route path="/category" element={<Category />} />
                   <Route path="/customers" element={<Customers />} />
                   <Route path="/salesorder" element={<SalesOrder />} />
+                  <Route path="/reports" element={<Reports />} />
                 </Routes>
+                {/* </Contextapi.Provider> */}
               </div>
             </main>
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </BrowserRouter>
   );
 };

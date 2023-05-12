@@ -1,100 +1,80 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import {
+  fetchUsers,
+  registerUser,
+  deleteUser,
+  updateUserByID,
+} from "../services/api-calls";
+import useSWR from "swr";
+import { toast } from "react-toastify";
 
 const Userlist = () => {
-  const [users, setUsers] = useState([]);
+  const { data, isLoading, error, mutate } = useSWR("/users", fetchUsers);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState(0);
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [model, setModel] = useState(false);
-
-  const handleSubmit = (e) => {
+  const [query, setQuery] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isEdit) {
-      const newUser = {
-        id: new Date().getTime().toString(),
+
+    if (
+      name === "" ||
+      email === "" ||
+      phone === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      toast.error("Please fill all the fields");
+      return;
+    } else if (password.length < 4 || password !== confirmPassword) {
+      toast.error(
+        "Password and Confirm Password must be same or password digits less then 4"
+      );
+      return;
+    }
+
+    try {
+      const values = {
         name,
-        username,
         email,
         phone,
         password,
-        confirmPassword,
       };
-      if (
-        name === "" ||
-        username === "" ||
-        email === "" ||
-        phone === "" ||
-        password === "" ||
-        confirmPassword === ""
-      ) {
-        alert("Please fill all the fields");
-        return;
-      }
-
-      if (password.length < 4 || password !== confirmPassword) {
-        alert(
-          "Password and Confirm Password must be same or password digits less then 4"
-        );
-        return;
-      }
-      setUsers([...users, newUser]);
+      const res = isEdit
+        ? await updateUserByID(id, values)
+        : await registerUser(values);
+      mutate();
+      toast.success(res.message);
       setName("");
-      setUsername("");
-      setEmail("");
-      setPhone("");
-      setPassword("");
-      setConfirmPassword("");
-    } else {
-      const newUser = users.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            name,
-            username,
-            email,
-            phone,
-            password,
-            confirmPassword,
-          };
-        }
-        return item;
-      });
-      setUsers(newUser);
-      setName("");
-      setUsername("");
       setEmail("");
       setPhone("");
       setPassword("");
       setConfirmPassword("");
       setIsEdit(false);
       setId(0);
+      setModel(false);
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
-  const removeUser = (id) => {
+  const removeUser = async (id) => {
     if (!window.confirm("Are you sure to delete this user?")) {
       return;
     }
-    const newUser = users.filter((item) => item.id !== id);
-    setUsers(newUser);
-  };
-
-  const editUser = (id) => {
-    const specificUser = users.find((item) => item.id === id);
-    setIsEdit(true);
-    setId(id);
-    setName(specificUser.name);
-    setUsername(specificUser.username);
-    setEmail(specificUser.email);
-    setPhone(specificUser.phone);
-    setPassword(specificUser.password);
-    setConfirmPassword(specificUser.confirmPassword);
+    try {
+      const res = await deleteUser(id);
+      mutate();
+      toast.success(res.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const openModel = () => {
@@ -103,71 +83,149 @@ const Userlist = () => {
 
   const closeModel = () => {
     setModel(false);
+    setIsEdit(false);
+    setId(0);
+    setName("");
+    setPhone("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
+  if (error)
+    return (
+      <h1>
+        {Object.values(error).map((item, i) => {
+          if (typeof item === "object") {
+            return <p key={i}>{item.message}</p>;
+          }
+          return <p key={i}>{item}</p>;
+        })}
+      </h1>
+    );
+
+  const filtered = filteredArray(data, query);
   return (
     <div className="flex justify-center bg-gray-100 h-screen">
       <div className="w-full m-9 bg-white ">
-        <h1 className="text-3xl font-bold text-gray-600  text-center ">
-          Users List
-        </h1>
-        <div className="flex justify-end mb-4">
-          <button
+        <div className="flex justify-between items-center m-4">
+          <h1 className="text-3xl font-bold text-gray-600  text-center ">
+            Users List
+          </h1>
+          <buttonm
             onClick={openModel}
             className="bg-green-500 text-white px-4 py-2 rounded font-medium mr-2"
           >
             Add User
-          </button>
+          </buttonm>
         </div>
-        <div className=" mr-3 w-full mb-8  rounded-lg shadow-lg overflow-y-auto h-[80%]">
-          <table className="w-full m-5 text-left table-auto ">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Username</th>
-                <th className="px-4 py-2">Email</th>
-                <th className="px-4 py-2">Phone</th>
-                <th className="px-4 py-2">Password</th>
-                <th className="px-4 py-2">Edit</th>
-                <th className="px-4 py-2">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((item) => {
-                const { id, name, username, email, phone, password } = item;
-                return (
-                  <tr key={id}>
-                    <td className="border px-4 py-2">{name}</td>
-                    <td className="border px-4 py-2">{username}</td>
-                    <td className="border px-4 py-2">{email}</td>
-                    <td className="border px-4 py-2">{phone}</td>
-                    <td className="border px-4 py-2">{password}</td>
-                    <td className="border px-4 py-2">
-                      <button
-                        onClick={() => {
-                          openModel();
-                          editUser(id);
-                        }}
-                        className="bg-green-500 text-white px-4 py-2 rounded font-medium"
+        <div className="flex justify-between items-center m-4">
+          <div className="flex items-center">
+            <FaSearch className="text-gray-400 mr-2" />
+            <input
+              type="search"
+              placeholder="Search"
+              className="outline-none  border-b-2 border-gray-400 "
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col mt-5">
+          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="py-2 align-middle inline-block  min-w-full sm:px-6 lg:px-8">
+              <div className="shadow overflow-hidden border-b border-gray-100 ">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr className="bg-gray-100">
+                      <th
+                        scope="col"
+                        className="px-8 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        <FaEdit />
-                      </button>
-                    </td>
-                    <td className="border px-4 py-2">
-                      <button
-                        className="bg-red-500 text-white px-4 py-2 rounded font-medium"
-                        onClick={() => removeUser(id)}
+                        Name
+                      </th>
+
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                        Email
+                      </th>
+
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Phone
+                      </th>
+
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {isLoading && <h1>Loading....</h1>}
+                    {filtered?.map((item) => {
+                      const { _id, name, email, phone, password } = item;
+                      return (
+                        <tr key={_id}>
+                          <td className="px-4 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="ml-4">
+                                <div className="text-sm font-medium text-gray-900">
+                                  {name}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td className="px-4 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">{email}</div>
+                          </td>
+
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">{phone}</div>
+                          </td>
+
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex gap-8">
+                            <button
+                              className="text-green-600 hover:text-green-900"
+                              onClick={() => {
+                                setIsEdit(true);
+                                setId(_id);
+                                setName(name);
+                                setEmail(email);
+                                setPhone(phone);
+                                setPassword(password);
+                                setConfirmPassword(password);
+                                setModel(true);
+                              }}
+                            >
+                              <FaEdit />
+                            </button>
+                            <button
+                              onClick={() => removeUser(_id)}
+                              className="text-red-600 hover:text-red-900"
+                            >
+                              <FaTrash />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
       {model && (
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg w-1/3">
@@ -189,18 +247,7 @@ const Userlist = () => {
                   placeholder="Name"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Username"
-                />
-              </div>
+
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Email
@@ -218,7 +265,7 @@ const Userlist = () => {
                   Phone
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -254,7 +301,7 @@ const Userlist = () => {
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   type="submit"
                 >
-                  Submit
+                  {isEdit ? "Update" : "Add"}
                 </button>
                 <button
                   onClick={closeModel}
@@ -271,4 +318,16 @@ const Userlist = () => {
     </div>
   );
 };
+
+function filteredArray(arr, query) {
+  return arr?.filter((el) => {
+    return (
+      el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+      el.email.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+      el.phone.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+      el.password.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  });
+}
+
 export default Userlist;

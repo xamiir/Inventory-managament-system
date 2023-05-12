@@ -5,7 +5,7 @@
   @apply flex justify-center;
 }
 .div3 {
-  @apply w-full m-9 bg-white mt-10 p-6 rounded-lg;
+  @apply w-full  mt-10 p-6 rounded-lg;
 }
 .div4 {
   @apply text-3xl font-bold mb-1 text-center;
@@ -32,10 +32,10 @@
   @apply text-3xl font-bold mb-1 text-center;
 }
 .div10 {
-  @apply mb-8  rounded-lg shadow-lg overflow-y-auto h-[80%];
+  @apply mb-8  rounded-lg shadow-lg;
 }
 .table-control {
-  @apply table-auto w-full;
+  @apply table-auto w-full divide-y divide-gray-200;
 }
 .tr-control {
   @apply px-4 py-2 bg-gray-100;
@@ -44,11 +44,11 @@
   @apply border px-4 py-2;
 }
 .bnt-control {
-  @apply border px-4 py-2 flex justify-end gap-4;
+  @apply px-4 py-2 flex justify-end gap-4;
 }
 .edit-button {
-  @apply bg-green-500 text-white px-4 py-2 rounded font-medium;
+  @apply bg-green-500 text-white px-4 py-2 rounded font-medium divide-y divide-gray-200;
 }
 .delete-button {
-  @apply bg-red-500 text-white px-4 py-2 rounded font-medium;
+  @apply bg-red-500 text-white px-4 py-2 divide-y divide-gray-200;
 }
