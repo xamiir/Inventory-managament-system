@@ -1,8 +1,8 @@
-// import { useState, useContext } from "react";
+//import { useState, useContext } from "react";
 import { useState } from "react";
 
 import { toast } from "react-toastify";
-// import Contextapi, { useStore } from "./Contextapi";
+//import Contextapi, { useStore } from "./Contextapi";
 import { useStore } from "./Contextapi";
 import {
   fetchCategories,
@@ -11,7 +11,8 @@ import {
 } from "../services/api-calls";
 //import { RouterProvider } from "react-router-dom";
 import useSWR from "swr";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 const Products = () => {
@@ -41,7 +42,7 @@ const Products = () => {
   //const [productCategory, setProductCategory] = useState();
   const [productCategory, setProductCategory] = useState(currentCategory);
 
-  // const { product, setProduct } = useContext(Contextapi);
+  //const { product, setProduct } = useContext(Contextapi);
   const addProduct = async (e) => {
     e.preventDefault();
     if (
@@ -67,7 +68,9 @@ const Products = () => {
 
     toast.success(res.message);
     dispatch({ type: "ADD_PRODUCTS", payload: res });
-    navigate("/ProductList");
+
+    navigate("/productList");
+
     mutateProducts();
     resetForm();
   };
@@ -107,7 +110,7 @@ const Products = () => {
           <div className="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
             <h3 className="pt-4 text-2xl text-center">
               {isEdit ? "Edit" : "Add"} Product{!isEdit ? "s" : ""}
-              {" - "}
+              {"- "}
               {productNames}
             </h3>
             <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded">

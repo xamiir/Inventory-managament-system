@@ -1,8 +1,8 @@
-// import React, { useState } from "react";
+//import React, { useState } from "react";
 
 import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { useStore } from "./Contextapi";
-// import Contextapi, { useStore } from "./Contextapi";
+//import Contextapi, { useStore } from "./Contextapi";
 import { Link } from "react-router-dom";
 import { deleteProducts } from "../services/api-calls";
 // import { useState } from "react";
@@ -11,10 +11,10 @@ import { toast } from "react-toastify";
 const ProductList = () => {
   // const [model, setModel] = useState(false);
   // const { product } = React.useContext(Contextapi);
-  // const { products: product, isLoading, dispatch } = useStore();
+  //const { products: product, isLoading, dispatch, mutateProducts } = useStore();
   const { products: product, isLoading, mutateProducts } = useStore();
   // const [id, setId] = useState("");
-  // const [id, setId] = useState("");
+  //const [id, setId] = useState("");
   // const openModal = () => {
   //   setModel(true);
   // };

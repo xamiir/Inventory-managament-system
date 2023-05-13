@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 import useSWR from "swr";
-// import { fetchProducts, createProduct } from "../services/api-calls";
+//import { fetchProducts, createProduct } from "../services/api-calls";
 import { fetchProducts } from "../services/api-calls";
 
 const Contextapi = createContext({});
@@ -18,8 +18,9 @@ const reducer = (state, action) => {
   }
 };
 export const ContextApi = ({ children }) => {
-  // const [products, dispatch] = useReducer(reducer, []);
-  const [dispatch] = useReducer(reducer, []);
+  const [products, dispatch] = useReducer(reducer, []);
+  console.log("ok" + products);
+  //const [dispatch] = useReducer(reducer, []);
   const { data, mutate, isLoading, error } = useSWR("/products", fetchProducts);
 
   return (
