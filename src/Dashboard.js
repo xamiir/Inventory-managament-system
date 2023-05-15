@@ -11,6 +11,8 @@ import {
   FaSignOutAlt,
   FaListAlt,
 } from "react-icons/fa";
+//import { FaBars } from "react-icons/fa";
+//  fa-bars import { FaBars } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //import Contextapi from "./Files/Contextapi";
@@ -24,9 +26,14 @@ import Userlist from "./Files/Userlist";
 import Category from "./Files/Category";
 import ProductList from "./Files/ProductList";
 import Reports from "./Files/Report";
+import CustomerReport from "./Files/CustomerReport";
+import CategoryReport from "./Files/CategoryReport";
+import ProductReport from "./Files/ProductReport";
 
 const Dashboard = () => {
   const [show, setShow] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+
   // const [product, setProduct] = useState([]);
 
   return (
@@ -37,11 +44,15 @@ const Dashboard = () => {
             className="bg-gray-900 text-white block px-3 py-2 rounded-md  font-medium text-2xl"
             aria-current="page"
           >
-            <span className="font-semibold text-xl tracking-tight">
-              Dashboard
-            </span>
+            <div className="flex items-center justify-center">
+              <img
+                className="h-8 w-8 rounded-full object-cover"
+                src="https://static.vecteezy.com/system/resources/thumbnails/020/269/327/small/video-icon-for-your-website-design-logo-app-ui-free-vector.jpg"
+                alt="profile"
+              />
+              <span className="ml-3 text-xl font-bold">Dashboard</span>
+            </div>
           </div>
-
           <div className="flex flex-col justify-between flex-1 h-0 overflow-y-auto">
             <ul className="flex flex-col py-4 space-y-1">
               <li className="px-5">
@@ -120,7 +131,7 @@ const Dashboard = () => {
                   <span className="ml-2">Sales Order</span>
                 </Link>
               </li>
-              <li className="px-5">
+              {/* <li className="px-5">
                 <Link
                   to="/reports"
                   className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
@@ -128,6 +139,66 @@ const Dashboard = () => {
                   <FaChartBar className="w-5 h-5" />
                   <span className="ml-2">Reports</span>
                 </Link>
+              </li>
+            </ul> */}
+              <li className="px-5">
+                <button
+                  onClick={() => setShowReport(!showReport)}
+                  className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white focus:outline-none"
+                >
+                  <FaChartBar className="w-5 h-5" />
+                  <span className="ml-2">Reports</span>
+                </button>
+
+                {showReport ? (
+                  <ul className="flex flex-col py-4 space-y-1">
+                    <div className="px-5">
+                      <Link
+                        to="/customerreport"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaChartBar className="w-5 h-5" />
+                        <span className="ml-2">Customer Reports</span>
+                      </Link>
+                    </div>
+                    <div className="px-5">
+                      <Link
+                        to="/reports"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaChartBar className="w-5 h-5" />
+                        <span className="ml-2">Sales Order Reports</span>
+                      </Link>
+                    </div>
+                    <div className="px-5">
+                      <Link
+                        to="/CategoryReport"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaChartBar className="w-5 h-5" />
+                        <span className="ml-2">Categories Reports</span>
+                      </Link>
+                    </div>
+                    <div className="px-5">
+                      <Link
+                        to="/productReport"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaChartBar className="w-5 h-5" />
+                        <span className="ml-2">Products Reports</span>
+                      </Link>
+                    </div>
+                    <div className="px-5">
+                      <Link
+                        to="/reports"
+                        className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
+                      >
+                        <FaChartBar className="w-5 h-5" />
+                        <span className="ml-2">User Reports</span>
+                      </Link>
+                    </div>
+                  </ul>
+                ) : null}
               </li>
             </ul>
 
@@ -157,6 +228,9 @@ const Dashboard = () => {
                   <Route path="/customers" element={<Customers />} />
                   <Route path="/salesorder" element={<SalesOrder />} />
                   <Route path="/reports" element={<Reports />} />
+                  <Route path="/customerreport" element={<CustomerReport />} />
+                  <Route path="/CategoryReport" element={<CategoryReport />} />
+                  <Route path="/productReport" element={<ProductReport />} />
                 </Routes>
                 {/* </Contextapi.Provider> */}
               </div>
