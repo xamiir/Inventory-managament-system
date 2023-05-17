@@ -42,7 +42,9 @@ const ProductReport = () => {
     <div className="flex justify-center bg-gray-100 h-full">
       <div className="flex flex-col w-full bg-white shadow-lg rounded-md">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-2xl font-medium text-gray-800">Catoray Report</h2>
+          <h2 className="text-2xl font-medium text-gray-800">
+            Products Report
+          </h2>
           <div className="flex space-x-1">
             <button className="flex items-center justify-center px-4 py-2 text-sm text-white bg-green-500 rounded-md">
               <FaFileExcel className="w-4 h-4 mr-2" />

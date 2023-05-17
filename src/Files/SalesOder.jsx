@@ -1,252 +1,261 @@
-import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import salesStyle from "./salesOrder.model.css";
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  FaTrash,
+  FaShoppingCart,
+  FaMinus,
+  FaPlus,
+  FaCog,
+  FaFileInvoice,
+} from "react-icons/fa";
+import { fetchProducts } from "../services/api-calls";
+// fa icon sales order
+
+import useSWR from "swr";
 
 const SalesOrder = () => {
-  const [customerName, setCustomerName] = useState("");
-  const [regDate, setRegDate] = useState("");
-  const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [orginalPrice, setOrginalPrice] = useState("");
-  const [discount, setDiscount] = useState("");
-  const [SalesOrder, setSalesOrder] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [id, setId] = useState(0);
+  const { data, isLoading } = useSWR("/products", fetchProducts);
+  const [query, setQuery] = React.useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!isEdit) {
-      const newSalesorder = {
-        id: new Date().getTime().toString(),
-        customerName,
-        regDate,
-        productName,
-        quantity,
-        orginalPrice,
-        discount,
-      };
-      if (
-        customerName === "" ||
-        regDate === "" ||
-        productName === "" ||
-        quantity === "" ||
-        orginalPrice === "" ||
-        discount === ""
-      ) {
-        alert("Please fill all the fields");
-        return;
-      }
-      setSalesOrder([...SalesOrder, newSalesorder]);
-      setCustomerName("");
-      setProductName("");
-      setRegDate("");
-      setQuantity("");
-      setOrginalPrice("");
-      setDiscount("");
-    } else {
-      const newSalesorder = SalesOrder.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            customerName,
-            regDate,
-            productName,
-            quantity,
-            orginalPrice,
-            discount,
-          };
-        }
-        return item;
-      });
-      setSalesOrder(newSalesorder);
-      setCustomerName("");
-      setProductName("");
-      setRegDate("");
-      setQuantity("");
-      setOrginalPrice("");
-      setDiscount("");
-
-      setIsEdit(false);
-      setId(0);
-    }
-  };
-  const removeOrder = (id) => {
-    if (!window.confirm("Are you sure you want to delete this Product?")) {
-      return;
-    }
-    const newSalesorder = SalesOrder.filter((item) => item.id !== id);
-    setSalesOrder(newSalesorder);
-  };
-  const Editorder = (id) => {
-    const newSalesorder = SalesOrder.find((item) => item.id === id);
-    const {
-      customerName,
-      regDate,
-      productName,
-      quantity,
-      orginalPrice,
-      discount,
-    } = newSalesorder;
-    setCustomerName(customerName);
-    setProductName(productName);
-    setRegDate(regDate);
-    setQuantity(quantity);
-    setOrginalPrice(orginalPrice);
-    setDiscount(discount);
-    setIsEdit(true);
-    setId(id);
-  };
+  const searchingProduct = filteredArray(data, query);
   return (
-    <div className={salesStyle.ok}>
-      <div className="div1">
-        <div className="child-container">
-          <div className="div-container">
-            <h1 className="tag-h1">Sales Order</h1>
-            <form onSubmit={handleSubmit}>
-              <div className="form-control">
-                <div className="w-1/2">
-                  <label htmlFor="customerName">Customer Name</label>
-                  <input
-                    type="text"
-                    name="customerName"
-                    placeholder="Enter Customer Name"
-                    autocomplete="on"
-                    className="input-control"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                  />
-                </div>
-                <div className="w-1/2 gap-6">
-                  <label htmlFor="Date">Date</label>
-                  <input
-                    type="date"
-                    name="Date"
-                    placeholder="Enter Date"
-                    className="input-control"
-                    value={regDate}
-                    onChange={(e) => setRegDate(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between gap-3">
-                <div className="w-1/2">
-                  <label htmlFor="product">Product</label>
-                  <input
-                    type="text"
-                    name="product"
-                    placeholder="Enter Product"
-                    className="input-control"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                  />
-                </div>
-                <div className="w-1/2 gap-6">
-                  <label htmlFor="quantity">Quantity</label>
-                  <input
-                    type="number"
-                    name="quantity"
-                    placeholder="Enter Quantity"
-                    className="input-control"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between gap-3">
-                <div className="w-1/2">
-                  <label htmlFor="orginalPrice">Orginal Price</label>
-                  <input
-                    type="number"
-                    name="orginalPrice"
-                    placeholder="Enter Orginal Price"
-                    className="input-control"
-                    value={orginalPrice}
-                    onChange={(e) => setOrginalPrice(e.target.value)}
-                  />
-                </div>
-                <div className="w-1/2 gap-6">
-                  <label htmlFor="discount">Discount</label>
-                  <input
-                    type="number"
-                    name="discount"
-                    placeholder="Enter Discount"
-                    className="input-control"
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="bnt-contair ">
-                <div className="bnt-con">
-                  <button className="button-control">
-                    {isEdit ? "update" : "sales"}
-                  </button>
-                </div>
-              </div>
-            </form>
-            <div className="mt-10">
-              <div className="scrol-bal">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="bg-gray-100">
-                      <th className="th-control">Customer Name</th>
-                      <th className="th-control">Date</th>
-                      <th className="th-control">Product</th>
-                      <th className="th-control">Quantity</th>
-                      <th className="th-control">Orginal Price</th>
-                      <th className="th-control">Discount</th>
-                      <th className="th-control">Total Price</th>
-                      <th className="th-control">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {SalesOrder.map((item) => {
-                      const {
-                        id,
-                        customerName,
-                        productName,
-                        regDate,
-                        quantity,
-                        orginalPrice,
-                        discount,
-                      } = item;
-                      return (
-                        <tr key={id}>
-                          <td className="td-control">{customerName} </td>
-                          <td className="td-control">{regDate} </td>
-                          <td className="td-control">{productName} </td>
-                          <td className="td-control">{quantity} </td>
-                          <td className="td-control">{orginalPrice} </td>
-                          <td className="td-control">{discount} </td>
-                          <td className="td-control">
-                            {orginalPrice * quantity - discount}
-                          </td>
-                          <td className="td-control flex gap-2">
-                            <button
-                              className="button-edit "
-                              onClick={() => Editorder(id)}
-                            >
-                              <FaEdit />
-                            </button>
-                            <button
-                              className="button-delete"
-                              onClick={() => removeOrder(id)}
-                            >
-                              <FaTrash />
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+    <div class="hide-print flex flex-row h-screen antialiased text-blue-gray-800">
+      <div class="flex flex-row w-auto flex-shrink-0 pl-4 pr-2 py-4">
+        <div class="flex flex-col items-center py-4 flex-shrink-0 w-20 bg-cyan-500 rounded-3xl">
+          <Link
+            href="#"
+            class="flex items-center justify-center h-12 w-12 bg-cyan-50 text-cyan-700 rounded-full"
+          >
+            <FaFileInvoice className="w-6 h-6" />
+          </Link>
+          <ul class="flex flex-col space-y-2 mt-12">
+            <li>
+              <Link href="#" class="flex items-center">
+                <span class="flex items-center justify-center h-12 w-12 rounded-2xl text-white">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link href="#" class="flex items-center">
+                <span class="flex items-center justify-center text-cyan-100 hover:bg-cyan-400 h-12 w-12 rounded-2xl">
+                  <FaCog className="w-6 h-6" />
+                </span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {/* content menu */}
+      <div class="flex-grow flex">
+        <div class="flex flex-col bg-blue-gray-50 h-full w-full py-4">
+          <div class="flex px-2 flex-row relative">
+            <div class="absolute left-5 top-3 px-2 py-2 rounded-full bg-cyan-500 text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              class="bg-white rounded-3xl shadow text-lg full w-full h-16 py-4 pl-16 transition-shadow focus:shadow-2xl focus:outline-none"
+              placeholder="Cari menu ..."
+              //x-model="keyword"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+          <div className="h-full overflow-hidden mt-4">
+            <div className="h-full overflow-y-auto px-2">
+              <div class="grid grid-cols-3 gap-4 pb-3 ">
+                {isLoading && <p>Loading...</p>}
+                {searchingProduct?.map((product) => {
+                  const { _id, name, cost } = product;
+                  return (
+                    <div
+                      key={_id}
+                      class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                      role="button"
+                    >
+                      <div class="flex items-center justify-between px-4 py-3 border-b">
+                        <img
+                          class="p-8 rounded-t-lg"
+                          src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a50-sm-a505f-ds-1.jpg"
+                          alt=""
+                        />
+                      </div>
+                      <div class="px-5 pb-5">
+                        <div className="flex justify-between">
+                          <h5 class="text-sm font-semibold tracking-tight text-gray-900 dark:text-white">
+                            {name}
+                          </h5>
+                        </div>
+
+                        <div class="flex justify-between mt-2">
+                          <span class="text-2xl font-bold text-gray-900 dark:text-white">
+                            ${cost}
+                          </span>
+                          <div class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
+                            Add to cart
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-[50%] bg-white rounded-3xl shadow-lg">
+          <div class="flex flex-row justify-between items-center px-4 py-3 border-b">
+            <button class="flex items-center justify-center px-4 py-2 text-sm text-red-500 rounded-md">
+              <FaTrash className="w-4 h-4 mr-2" />
+            </button>
+
+            <button class="flex items-center justify-center px-4 py-2 text-sm text-green-600 rounded-md">
+              <FaShoppingCart className="w-4 h-4 mr-2" />
+            </button>
+          </div>
+
+          <div class="flex flex-col flex-grow overflow-hidden">
+            <div class="flex flex-col flex-grow overflow-y-auto">
+              <div class="flex flex-col">
+                <div class="flex flex-row justify-between items-center px-4 py-3 border-b bg-gray-100 m-3">
+                  <div className="flex items-center">
+                    <img
+                      src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a50-sm-a505f-ds-1.jpg"
+                      alt=""
+                      className="object-cover w-12 h-12"
+                    />
+                    <div className="ml-2">
+                      <p className="text-sm font-semibold">samsung a23</p>
+                      <p className="text-xs text-gray-500">$160</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <button className="text-gray-600 hover:text-gray-800  font-bold py-2 px-4 rounded-full">
+                      <FaMinus />
+                    </button>
+                    <p className="px-2">1</p>
+                    <button className="text-gray-600 hover:text-gray-800   font-bold py-2 px-4 rounded-full">
+                      <FaPlus />
+                    </button>
+                  </div>
+                </div>
+                <div class="flex flex-row justify-between items-center px-4 py-3 border-b bg-gray-100 m-3">
+                  <div className="flex items-center">
+                    <img
+                      src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a50-sm-a505f-ds-1.jpg"
+                      alt=""
+                      className="object-cover w-12 h-12"
+                    />
+                    <div className="ml-2">
+                      <p className="text-sm font-semibold">samsung a23</p>
+                      <p className="text-xs text-gray-500">$160</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <button className="text-gray-600 hover:text-gray-800  font-bold py-2 px-4 rounded-full">
+                      <FaMinus />
+                    </button>
+                    <p className="px-2">1</p>
+                    <button className="text-gray-600 hover:text-gray-800   font-bold py-2 px-4 rounded-full">
+                      <FaPlus />
+                    </button>
+                  </div>
+                </div>
+                <div class="flex flex-row justify-between items-center px-4 py-3 border-b bg-gray-100 m-3 ">
+                  <div className="flex items-center">
+                    <img
+                      src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a50-sm-a505f-ds-1.jpg"
+                      alt=""
+                      className="object-cover w-12 h-12"
+                    />
+                    <div className="ml-2">
+                      <p className="text-sm font-semibold">samsung a23</p>
+                      <p className="text-xs text-gray-500">$160</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <button className="text-gray-600 hover:text-gray-800  font-bold py-2 px-4 rounded-full">
+                      <FaMinus />
+                    </button>
+                    <p className="px-2">1</p>
+                    <button className="text-gray-600 hover:text-gray-800   font-bold py-2 px-4 rounded-full">
+                      <FaPlus />
+                    </button>
+                  </div>
+                </div>
+                <div class="flex flex-row justify-between items-center px-4 py-3 border-b bg-gray-100 m-3 ">
+                  <div className="flex items-center">
+                    <img
+                      src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a50-sm-a505f-ds-1.jpg"
+                      alt=""
+                      className="object-cover w-12 h-12"
+                    />
+                    <div className="ml-2">
+                      <p className="text-sm font-semibold">samsung a23</p>
+                      <p className="text-xs text-gray-500">$160</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <button className="text-gray-600 hover:text-gray-800  font-bold py-2 px-4 rounded-full">
+                      <FaMinus />
+                    </button>
+                    <p className="px-2">1</p>
+                    <button className="text-gray-600 hover:text-gray-800   font-bold py-2 px-4 rounded-full">
+                      <FaPlus />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-row justify-between items-center px-4 py-3 border-t">
+            <p class="text-xl font-semibold">Total</p>
+            <p class="text-xl font-semibold">$640</p>
+          </div>
+
+          <div class="flex flex-row justify-between items-center px-4 py-3 border-t">
+            <button class="flex items-center justify-center px-4 py-2 text-white font-bold w-full bg-cyan-500 rounded-md ">
+              Submit
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
+  function filteredArray(arr, query) {
+    return arr?.filter((el) => {
+      return el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    });
+  }
 };
 
 export default SalesOrder;

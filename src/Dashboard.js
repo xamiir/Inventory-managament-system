@@ -29,6 +29,7 @@ import Reports from "./Files/Report";
 import CustomerReport from "./Files/CustomerReport";
 import CategoryReport from "./Files/CategoryReport";
 import ProductReport from "./Files/ProductReport";
+import UserReport from "./Files/UserReport";
 
 const Dashboard = () => {
   const [show, setShow] = useState(false);
@@ -47,10 +48,10 @@ const Dashboard = () => {
             <div className="flex items-center justify-center">
               <img
                 className="h-8 w-8 rounded-full object-cover"
-                src="https://static.vecteezy.com/system/resources/thumbnails/020/269/327/small/video-icon-for-your-website-design-logo-app-ui-free-vector.jpg"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkQdZn8r9J-MQ8_DwiVN4-XbkhUw7YeI_gNw&usqp=CAU"
                 alt="profile"
               />
-              <span className="ml-3 text-xl font-bold">Dashboard</span>
+              <span className="ml-3 text-xl font-bold">Inventory</span>
             </div>
           </div>
           <div className="flex flex-col justify-between flex-1 h-0 overflow-y-auto">
@@ -190,7 +191,7 @@ const Dashboard = () => {
                     </div>
                     <div className="px-5">
                       <Link
-                        to="/reports"
+                        to="/userReport"
                         className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
                       >
                         <FaChartBar className="w-5 h-5" />
@@ -231,6 +232,7 @@ const Dashboard = () => {
                   <Route path="/customerreport" element={<CustomerReport />} />
                   <Route path="/CategoryReport" element={<CategoryReport />} />
                   <Route path="/productReport" element={<ProductReport />} />
+                  <Route path="/userReport" element={<UserReport />} />
                 </Routes>
                 {/* </Contextapi.Provider> */}
               </div>
