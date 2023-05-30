@@ -102,8 +102,15 @@ const ProductList = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {isLoading && <h1>Loading....</h1>}
                   {filteredProducts?.map((item, index) => {
-                    const { _id, name, cost, quantity, description, category } =
-                      item;
+                    const {
+                      _id,
+                      name,
+                      cost,
+                      quantity,
+                      description,
+                      image,
+                      category,
+                    } = item;
                     return (
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -111,7 +118,10 @@ const ProductList = () => {
                             <div className="flex-shrink-0 h-10 w-10">
                               <img
                                 className="h-10 w-10 rounded-full"
-                                src="https://www.shopbase.com/blog/wp-content/uploads/2022/05/winning-product-la-gi-1.jpg"
+                                src={
+                                  image ||
+                                  "https://www.shopbase.com/blog/wp-content/uploads/2022/05/winning-product-la-gi-1.jpg"
+                                }
                                 alt=""
                               />
                             </div>
@@ -171,14 +181,7 @@ const ProductList = () => {
       </div>
     </div>
   );
-  // function filteredArray(arr, query) {
-  //   return arr?.filter((el) => {
-  //     return (
-  //       el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-  //       el.date.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
-  //     );
-  //   });
-  // }
+
   function filteredArray(arr, query) {
     return arr?.filter((el) => {
       return (

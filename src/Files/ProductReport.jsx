@@ -22,20 +22,33 @@ const ProductReport = () => {
     doc.save("customerReport.pdf");
   };
 
+  // ReactHTMLTableToExcel.format = (s, c) => {
+  //   if (c && c["table"]) {
+  //     const html = c.table;
+  //     const parser = new DOMParser();
+  //     const doc = parser.parseFromString(html, "text/html");
+  //     const rows = doc.querySelectorAll("tr");
+
+  //     for (const row of rows) row.removeChild(row.firstChild);
+
+  //     c.table = doc.querySelector("table").outerHTML;
+  //   }
+
+  //   return s.replace(/{(\w+)}/g, (m, p) => c[p]);
+  // };
+
   ReactHTMLTableToExcel.format = (s, c) => {
     if (c && c["table"]) {
       const html = c.table;
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
       const rows = doc.querySelectorAll("tr");
-
       for (const row of rows) row.removeChild(row.firstChild);
-
       c.table = doc.querySelector("table").outerHTML;
     }
-
     return s.replace(/{(\w+)}/g, (m, p) => c[p]);
   };
+
   // const filteredCategories = filteredArray(data, query);
   const fiterdataproduct = filteredArray(data, query);
   return (

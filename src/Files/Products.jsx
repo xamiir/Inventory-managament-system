@@ -8,6 +8,7 @@ import {
   fetchCategories,
   createProduct,
   updateProduct,
+  uploadImage,
 } from "../services/api-calls";
 //import { RouterProvider } from "react-router-dom";
 import useSWR from "swr";
@@ -37,10 +38,24 @@ const Products = () => {
   const [productDescription, setProductDescription] = useState(
     isEdit ? currentProduct?.description : ""
   );
+
+  const [productImage, setProductImage] = useState(
+    isEdit ? currentProduct?.image : []
+  );
+
+  const [previewImage, setPreviewImage] = useState("");
+
   const currentCategory = isEdit ? currentProduct?.category?._id : "";
 
   //const [productCategory, setProductCategory] = useState();
   const [productCategory, setProductCategory] = useState(currentCategory);
+
+  const uploadFile = async (path) => {
+    const formData = new FormData();
+    formData.append("image", path);
+    const res = await uploadImage(formData);
+    setPreviewImage(res);
+  };
 
   //const { product, setProduct } = useContext(Contextapi);
   const addProduct = async (e) => {
@@ -61,6 +76,7 @@ const Products = () => {
       quantity: productQuantity,
       description: productDescription,
       category: productCategory,
+      image: previewImage,
     };
     const res = !isEdit
       ? await createProduct(data)
@@ -192,6 +208,36 @@ const Products = () => {
                   </select>
                 </div>
               </div>
+              <div className="mb-4 md:flex md:justify-between">
+                <div className="mb-4 md:mr-2 md:mb-0">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
+                    Product Image
+                  </label>
+                  {/* <input
+                    className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    type="text"
+                    value={productCategory}
+                    placeholder="Product Category"
+                    onChange={(e) => setProductCategory(e.target.value)}
+                  /> */}
+
+                  <input
+                    type="file"
+                    // value={productImage}
+                    onChange={(e) => uploadFile(e.target.files[0])}
+                  />
+                  {/* {productImage && (
+                    <button onClick={() => uploadFile(productImage)}>
+                      upload
+                    </button>
+                  )} */}
+                </div>
+
+                {previewImage && (
+                  <img src={previewImage} className="w-48 h-48 rounded-md" />
+                )}
+              </div>
+
               <div className="mb-6 text-center">
                 <button
                   className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
