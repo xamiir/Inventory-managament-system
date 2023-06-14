@@ -39,9 +39,12 @@ const Products = () => {
     isEdit ? currentProduct?.description : ""
   );
 
-  const [productImage, setProductImage] = useState(
-    isEdit ? currentProduct?.image : []
-  );
+  // const [productImage, setProductImage] = useState(
+  //   isEdit ? currentProduct?.image : []
+  // );
+  // const [salesPrice, setSalesPrice] = useState(
+
+  // );
 
   const [previewImage, setPreviewImage] = useState("");
 
@@ -234,7 +237,11 @@ const Products = () => {
                 </div>
 
                 {previewImage && (
-                  <img src={previewImage} className="w-48 h-48 rounded-md" />
+                  <img
+                    src={previewImage}
+                    className="w-48 h-48 rounded-md"
+                    alt="preview"
+                  />
                 )}
               </div>
 

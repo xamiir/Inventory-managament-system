@@ -1,10 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
+// import { useNanvigate } from "react-router-dom";
 import {
   fetchCustomerCount,
   fetchProductCount,
   fetchCategoryCount,
   fetchUserCount,
+  //checkToken,
 } from "../services/api-calls";
 
 const Report = () => {
@@ -12,6 +14,9 @@ const Report = () => {
   const [productCount, setProductCount] = useState("0");
   const [userCount, setUserCount] = useState("0");
   const [categoryCount, setCategoryCount] = useState("0");
+  //const token = localStorage.getItem("token");
+  // const navigate = useNavigate();
+
   useEffect(() => {
     const getCustomerCount = async () => {
       try {
@@ -57,8 +62,19 @@ const Report = () => {
     getUserCount();
   }, []);
 
+  // useEffect(() => {
+  //   (async function checkIsAuth() {
+  //     try {
+  //       const res = await checkToken(token);
+  //     } catch (error) {
+  //       localStorage.removeItem("token");
+  //       navigate("/login");
+  //     }
+  //   })();
+  // }, [token]);
+
   return (
-    <div className=" bg-gray-100">
+    <div className="">
       <div className="flex flex-wrap justify-center items-center">
         <div className="w-full lg:w-1/3 xl:w-1/3 p-3">
           <div className="bg-white border rounded shadow">

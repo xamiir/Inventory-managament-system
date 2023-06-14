@@ -26,13 +26,13 @@
   @apply mb-4 mt-0 flex justify-center;
 }
 .div8 {
-  @apply w-full m-2 bg-white mt-10 p-6 rounded-lg;
+  @apply w-full  bg-white mt-10 p-6 rounded-lg;
 }
 .div9 {
-  @apply text-3xl font-bold mb-1 text-center;
+  @apply text-3xl font-bold text-center;
 }
 .div10 {
-  @apply mb-8  rounded-lg shadow-lg;
+  @apply rounded-lg shadow-lg;
 }
 .table-control {
   @apply table-auto w-full divide-y divide-gray-200;

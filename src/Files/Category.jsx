@@ -87,8 +87,8 @@ const Category = () => {
   return (
     // <div className="flex justify-center bg-gray-100 h-screen">
 
-    <div className="flex justify-center bg-gray-100 h-full">
-      <div className="w-full m-9 bg-white ">
+    <div className="flex justify-center  h-full">
+      <div className="w-full m-9 bg-white rounded-xl">
         <div className="flex justify-between items-center"></div>
         <div className="flex justify-between items-center ">
           <h1 className="text-3xl text-black font-semibold m-4">Category</h1>

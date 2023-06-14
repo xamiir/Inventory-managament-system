@@ -51,6 +51,7 @@ const ShoppinReducer = (state, action) => {
             ? { ...product, quantity: product.quantity + 1 }
             : product
         ),
+        total: state.total + action.cost,
       };
     case SUB_QUANTITY:
       return {
@@ -64,6 +65,7 @@ const ShoppinReducer = (state, action) => {
               }
             : product
         ),
+        total: state.total - action.cost,
       };
 
     case EMPTY_CART:
@@ -102,10 +104,10 @@ export const CartProvider = ({ children }) => {
   };
 
   const incrementQuantity = (product) => {
-    dispatch({ type: ADD_QUANTITY, payload: product });
+    dispatch({ type: ADD_QUANTITY, ...product });
   };
   const decrementQuantity = (product) => {
-    dispatch({ type: SUB_QUANTITY, payload: product });
+    dispatch({ type: SUB_QUANTITY, ...product });
   };
 
   const emptyCart = () => {

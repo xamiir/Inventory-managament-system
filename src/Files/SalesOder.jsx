@@ -5,7 +5,7 @@ import {
   FaShoppingCart,
   FaMinus,
   FaPlus,
-  FaPrint,
+  //FaPrint,
   //FaCog,
   //FaFileInvoice,
 } from "react-icons/fa";
@@ -13,13 +13,14 @@ import {
 // import { fetchCustomer } from "../services/api-calls";
 import useSWR from "swr";
 import {
-  fetchOrdersMeta,
+  //fetchOrdersMeta,
   fetchProducts,
   fetchCustomer,
   createOrder,
 } from "../services/api-calls";
 import { toast } from "react-toastify";
 import { useCart } from "../context/CartProvider";
+import "../Component/App.css";
 
 const SalesOrder = () => {
   const { data, isLoading } = useSWR("/products", fetchProducts);
@@ -27,7 +28,7 @@ const SalesOrder = () => {
   const {
     state: cartState,
     addToCart,
-    removeFromCart,
+    //removeFromCart,
     incrementQuantity,
     decrementQuantity,
     getQuantity,
@@ -61,7 +62,12 @@ const SalesOrder = () => {
   const finalSubmit = async (e) => {
     e.preventDefault();
     // cartState have items array and contains array of object so ineed to map it and only id of array
-    const items = cartState.items.map((item) => item._id);
+    const items = cartState.items.map((item) => {
+      return {
+        _id: item._id,
+        quantity: item.quantity,
+      };
+    });
 
     const reqObject = {
       customer: state.customer,
@@ -70,17 +76,22 @@ const SalesOrder = () => {
       orderedBy: "645f863d4cb4f73cfd963910",
     };
 
-    const res = await createOrder(reqObject);
-    toast.success(res.message);
-    // resetForm();
-    emptyCart();
-    setState({
-      query: "",
-      customer: "",
-      discount: "",
-    });
+    try {
+      const res = await createOrder(reqObject);
+      toast.success(res.message);
 
-    setFormNo(formArray[0]);
+      emptyCart();
+      setState({
+        query: "",
+        customer: "",
+        discount: "",
+      });
+
+      setFormNo(formArray[0]);
+    } catch (error) {
+      toast.error(error.message);
+    }
+    // resetForm();
   };
 
   const pre = () => {
@@ -270,8 +281,9 @@ const SalesOrder = () => {
                         <div className="flex items-center">
                           <button
                             onClick={() => {
-                              decrementQuantity();
+                              decrementQuantity(product);
                             }}
+                            disabled={product.quantity === 1}
                             className="text-gray-600 hover:text-gray-800  font-bold py-2 px-4 rounded-full"
                           >
                             <FaMinus />
@@ -279,7 +291,7 @@ const SalesOrder = () => {
                           <p className="px-2">{getQuantity(product._id)}</p>
                           <button
                             onClick={() => {
-                              incrementQuantity();
+                              incrementQuantity(product);
                             }}
                             className="text-gray-600 hover:text-gray-800   font-bold py-2 px-4 rounded-full"
                           >
@@ -303,7 +315,7 @@ const SalesOrder = () => {
                 class="flex items-center justify-center px-4 py-2 text-white font-bold w-full bg-gray-700 rounded-md "
                 onClick={next}
               >
-                Submit
+                Next
               </button>
             </div>
           </div>
@@ -349,89 +361,227 @@ const SalesOrder = () => {
         </div>
       )}
       {formNo === 3 && (
-        <div className=" rounded shadow-lg h-screen mt-4   border-spacing-1 bg-white w-[100%] flex justify-center items-center">
-          <form className="w-[50%] overflow-x-auto ">
-            {/* <span className="text-sm font-semibold ml-2 mt-8 ">
-              Customer Name: {getCustomerName(state.customer)}
-            </span> */}
-
-            <div className="overflow-x-auto ">
-              <span className="text-sm font-semibold ml-2 mt-8 ">
-                Customer Name: {getCustomerName(state.customer)}
-              </span>
-              <table className="min-w-full bg-white">
-                <thead className="bg-gray-100 text-white" id="">
-                  <tr>
-                    <th
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      scope="col"
-                    >
-                      item
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      scope="col"
-                    >
-                      Quantity
-                    </th>
-                    <th
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      scope="col"
-                    >
-                      price
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartState.items.map((item) => {
-                    return (
-                      <tr key={item._id} className="bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {item.name}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {item.quantity}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {item.cost * item.quantity}
-                        </td>
+        <div className="">
+          <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="w-3/4 bg-white shadow-lg m-10">
+              <div className="flex justify-between p-4">
+                <div>
+                  <h1 className="text-3xl italic font-extrabold tracking-widest text-indigo-500">
+                    DAHAB ELECTRONICS
+                  </h1>
+                  <p className="text-base">
+                    waxaa ka helee shirkada dahab electronics telephone high
+                    quality
+                  </p>
+                </div>
+                <div className="p-2">
+                  <ul className="flex">
+                    <li className="flex flex-col items-center p-2 border-l-2 border-indigo-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6 text-blue-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                        />
+                      </svg>
+                      <span className="text-sm">www.dahab.com</span>
+                    </li>
+                    <li className="flex flex-col p-2 border-l-2 border-indigo-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6 text-blue-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span className="text-sm">
+                        Bakaaro wadada shirkada ,Sobe, KM4 , Mogadishu , Somalia
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="w-full h-0.5 bg-indigo-500"></div>
+              <div className="flex justify-between p-4">
+                <div>
+                  <h6 className="font-bold">
+                    Order Date :{" "}
+                    <span className="text-sm font-medium"> 12/12/2022</span>
+                  </h6>
+                  <h6 className="font-bold">
+                    Order ID :{" "}
+                    <span className="text-sm font-medium"> 12/12/2022</span>
+                  </h6>
+                </div>
+                <div className="w-40">
+                  <address className="text-sm">
+                    <span className="font-bold"> User order by : </span>
+                    abdullahi abdi ahmed
+                  </address>
+                </div>
+                <div className="w-40">
+                  <address className="text-sm">
+                    <span className="font-bold">customer :</span>
+                    {getCustomerName(state.customer)}
+                  </address>
+                </div>
+                <div></div>
+              </div>
+              <div className="flex justify-center p-4">
+                <div className="border-b border-gray-200 shadow">
+                  <table className="">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-2 text-xs text-gray-500 ">#</th>
+                        <th className="px-4 py-2 text-xs text-gray-500 ">
+                          Product Name
+                        </th>
+                        <th className="px-4 py-2 text-xs text-gray-500 ">
+                          Quantity
+                        </th>
+                        <th className="px-4 py-2 text-xs text-gray-500 ">
+                          Rate
+                        </th>
+                        <th className="px-4 py-2 text-xs text-gray-500 ">
+                          Subtotal
+                        </th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                    </thead>
+                    <tbody className="bg-white">
+                      {cartState.items.map((item) => (
+                        <tr className="whitespace-nowrap" key={item.id}>
+                          <td className="px-6 py-4 text-sm text-gray-500">
+                            {cartState.items.indexOf(item) + 1}
+                          </td>
 
-            <div className="flex flex-col justify-between items-center px-4 py-3 border-b">
-              <div className="flex-row justify-between flex items-center w-full">
-                <p className="text-xl font-semibold">Discount</p>
-                <p className="text-xl font-semibold">{cartState.discount}</p>
-              </div>
-              <div className="flex-row justify-between flex items-center w-full">
-                <p className="text-xl font-semibold">SubTotal </p>
-                <p className="text-xl font-semibold">{cartState.subTotal}</p>
-              </div>
-              <div className="flex-row justify-between flex items-center w-full">
-                <p className="text-xl font-semibold">Total</p>
-                <p className="text-xl font-semibold">{cartState.total}</p>
-              </div>
-            </div>
-            <div className="flex flex-row justify-between items-center px-4 py-3 border-b">
-              <button
-                class="flex items-center justify-center px-4 py-2 text-white font-bold w-[30%] bg-gray-700 rounded-md "
-                onClick={pre}
-              >
-                Previous
-              </button>
+                          {/* <td className="px-6 py-4 text-sm text-gray-500">
+                            {item.id}
+                          </td> */}
+                          <td className="px-6 py-4 text-sm text-gray-500">
+                            {item.name}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-gray-900">
+                              {item.quantity}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-gray-500">
+                              ${item.cost}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            {" "}
+                            ${item.cost * item.quantity}
+                          </td>
+                        </tr>
+                      ))}
 
-              <button
-                class="flex items-center justify-center px-4 py-2 text-white font-bold w-[30%] bg-gray-700 rounded-md "
-                onClick={finalSubmit}
-              >
-                Submit
-              </button>
+                      {/* <tr className="whitespace-nowrap">
+                        <td className="px-6 py-4 text-sm text-gray-500">1</td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-gray-900">
+                            Amazon Brand - Symactive Men's Regular Fit T-Shirt
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-gray-500">4</div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500">$20</td>
+                        <td className="px-6 py-4">$30</td>
+                      </tr>
+
+                      <tr className="text-white bg-gray-800">
+                        <th colspan="3"></th>
+                        <td className="text-sm font-bold">
+                          <b>Total</b>
+                        </td>
+                        <td className="text-sm font-bold">
+                          <b>$999.0</b>
+                        </td>
+                      </tr> */}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="flex flex-col justify-between items-center px-4 py-3 border-b">
+                <div className="flex-row justify-between flex items-center w-[50%]">
+                  <p className="text-2xl text-gray-600 font-semibold">
+                    Total: ${cartState.total}
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-between p-4">
+                <div>
+                  <h3 className="text-xl">Terms And Condition :</h3>
+                  <ul className="text-xs list-disc list-inside">
+                    <li>
+                      Please make sure you have the right recipient and address
+                    </li>
+                    <li>
+                      If you have any questions concerning this invoice, contact
+                    </li>
+                    <li>contact us at : 061-555-5555 or dahab@gmail.com :</li>
+                  </ul>
+                </div>
+                <div className="p-4">
+                  <h3>Signature</h3>
+                  <div className="text-4xl italic text-indigo-500">AAA</div>
+                </div>
+              </div>
+              <div className="w-full h-0.5 bg-indigo-500"></div>
+
+              <div className="p-4">
+                <div className="flex items-center justify-center">
+                  Thank you very much for doing business with us.
+                </div>
+
+                <div
+                  className="flex items-end justify-end space-x-3 "
+                  id="no-printme"
+                >
+                  <button
+                    className="px-4 py-2 text-sm text-green-600 bg-green-100"
+                    onClick={pre}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    className="px-4 py-2 text-sm text-blue-600 bg-blue-100"
+                    onClick={finalSubmit}
+                  >
+                    sumbit
+                  </button>
+                  <button
+                    className="px-4 py-2 text-sm text-red-600 bg-red-100 "
+                    onClick={() => window.print()}
+                  >
+                    <span className="ml-2">print</span>
+                  </button>
+                </div>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       )}
     </div>

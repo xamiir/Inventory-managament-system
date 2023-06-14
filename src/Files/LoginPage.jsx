@@ -1,25 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUser } from "../services/api-calls";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = { email, password };
-    try {
-      const response = await loginUser(user);
-      console.log(response);
-      if (response.token) {
-        localStorage.setItem("token", response.token);
-        window.location.href = "/dashboard";
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
+    const response = await loginUser(user);
+    // response on the server
+    if (response?.token) {
+      toast.success("Login Sucessfully");
+      localStorage.setItem("token", response?.token);
+      localStorage.setItem("user", response?.user);
+      // page reloads after login
+      navigate("/");
     }
+    response?.error && toast.error(response?.error);
   };
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  });
 
   return (
     <div className="bg-gray-100">

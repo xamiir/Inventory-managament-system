@@ -106,7 +106,7 @@ const Userlist = () => {
 
   const filtered = filteredArray(data, query);
   return (
-    <div className="flex justify-center bg-gray-100 h-screen">
+    <div className="flex justify-center  h-screen">
       <div className="w-full m-9 bg-white ">
         <div className="flex justify-between items-center m-4">
           <h1 className="text-3xl font-bold text-gray-600  text-center ">

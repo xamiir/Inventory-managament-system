@@ -153,3 +153,15 @@ export const createOrder = async (data) => {
   });
   return res.data;
 };
+
+export const checkToken = async (token) => {
+  return await axios.post(
+    "/check-token",
+    {},
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+};

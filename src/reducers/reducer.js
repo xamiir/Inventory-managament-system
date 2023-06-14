@@ -36,6 +36,7 @@ const ShoppinReducer = (state, action) => {
         ),
       };
     case ADD_QUANTITY:
+      console.log(action);
       return {
         ...state,
         items: state.items.map((product) =>
