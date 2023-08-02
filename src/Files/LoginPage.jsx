@@ -15,7 +15,7 @@ const LoginPage = () => {
     if (response?.token) {
       toast.success("Login Sucessfully");
       localStorage.setItem("token", response?.token);
-      localStorage.setItem("user", response?.user);
+      localStorage.setItem("user", JSON.stringify(response?.user));
       // page reloads after login
       navigate("/");
     }

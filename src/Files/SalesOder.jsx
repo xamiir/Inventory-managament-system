@@ -21,6 +21,7 @@ import {
 import { toast } from "react-toastify";
 import { useCart } from "../context/CartProvider";
 import "../Component/App.css";
+import useAuth from "../context/useAuth";
 
 const SalesOrder = () => {
   const { data, isLoading } = useSWR("/products", fetchProducts);
@@ -42,7 +43,9 @@ const SalesOrder = () => {
     query: "",
     customer: "",
     discount: "",
+    dateordered: "",
   });
+  const { user } = useAuth();
   const inputHandle = (e) => {
     setState({
       ...state,
@@ -73,7 +76,7 @@ const SalesOrder = () => {
       customer: state.customer,
       items,
       total: cartState.total,
-      orderedBy: "645f863d4cb4f73cfd963910",
+      orderedBy: user !== null ? user._id : null,
     };
 
     try {
@@ -322,9 +325,20 @@ const SalesOrder = () => {
         </div>
       )}
       {formNo === 2 && (
-        <div className=" rounded-3xl shadow-lg h-52 flex justify-center m-28 w-full">
+        <div className=" rounded-3xl shadow-lg h-96 flex justify-center m-28 w-full">
           <div className="w-[50%]">
-            <div className="flex flex-row justify-between items-center px-4 py-3 border-b">
+            <div className="flex flex-col justify-between px-4 py-3 border-b">
+              <label className="text-xl font-semibold ml-0">Ordered By</label>
+              <input
+                className="border border-gray-300 rounded-md px-2 py-1 w-[67%]"
+                disabled
+                name="customer"
+                defaultValue={
+                  user !== null ? user.name : "Please login to place an order"
+                }
+              />
+            </div>
+            <div className="flex flex-col justify-between px-4 py-3 border-b">
               <label className="text-xl font-semibold ml-0">
                 Customer Name
               </label>
@@ -342,7 +356,16 @@ const SalesOrder = () => {
                 ))}
               </select>
             </div>
-
+            <div className="flex flex-col justify-between px-4 py-3 border-b">
+              <label className="text-xl font-semibold ml-0">Date:</label>
+              <input
+                className="border border-gray-300 rounded-md px-2 py-1 w-[67%]"
+                type="date"
+                onChange={inputHandle}
+                name="dateordered"
+                value={state.dateordered}
+              />
+            </div>
             <div className="flex flex-row justify-between items-center px-4 py-3 border-b gap-3">
               <button
                 class="flex items-center justify-center px-4 py-2 text-white font-bold w-full bg-gray-700 rounded-md "
@@ -426,17 +449,20 @@ const SalesOrder = () => {
                 <div>
                   <h6 className="font-bold">
                     Order Date :{" "}
-                    <span className="text-sm font-medium"> 12/12/2022</span>
+                    <span className="text-sm font-medium">
+                      {" "}
+                      {state.dateordered}
+                    </span>
                   </h6>
-                  <h6 className="font-bold">
+                  {/* <h6 className="font-bold">
                     Order ID :{" "}
                     <span className="text-sm font-medium"> 12/12/2022</span>
-                  </h6>
+                  </h6> */}
                 </div>
                 <div className="w-40">
                   <address className="text-sm">
                     <span className="font-bold"> User order by : </span>
-                    abdullahi abdi ahmed
+                    {user !== null ? user.name : ""}
                   </address>
                 </div>
                 <div className="w-40">
