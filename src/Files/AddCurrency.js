@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+//import Sidebar from "./Sidebar";
 import {
-  fetchCategories,
-  createCategory,
-  editCategory,
-  deleteCategory,
+    getCurrencies ,
+    createCurrency,
+    editCurrency,
+    deleteCurrency,
 } from "../services/api-calls";
 import useSWR from "swr";
 import { toast } from "react-toastify";
 
-const Category = () => {
+const AddCurrency = () => {
   const { data, isLoading, error, mutate } = useSWR(
-    "/category",
-    fetchCategories
+    "/currencies",
+    getCurrencies
   );
   // const [categorys, setCategorys] = useState(data);
-  const [categoryName, setCategoryName] = useState("");
-  const [categoryDate, setCategoryDate] = useState("");
+  const [currencyName, setCurrencyName] = useState("");
+  const [currencyCode, setCurrencyCode] = useState("");
   // const [category, setCategory] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState(0);
@@ -25,22 +26,22 @@ const Category = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!categoryName || !categoryDate) {
+    if (!currencyName|| !currencyCode) {
       toast.error("Please fill all the fields");
       return;
     }
     try {
       const values = {
-        name: categoryName,
-        date: categoryDate,
+        name: currencyName,
+        code: currencyCode,
       };
       const res = isEdit
-        ? await editCategory(id, values)
-        : await createCategory(values);
+        ? await  editCurrency(id, values)
+        : await  createCurrency(values);
       mutate();
       toast.success(res.message);
-      setCategoryName("");
-      setCategoryDate("");
+        setCurrencyName("");
+      setCurrencyCode("");
       setModel(false);
       setIsEdit(false);
       setId(0);
@@ -49,12 +50,12 @@ const Category = () => {
     }
   };
 
-  const removeCategory = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this category?")) {
+    const removeCurrency = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this currency?")) {
       return;
     }
     try {
-      const res = await deleteCategory(id);
+      const res = await deleteCurrency(id);
       mutate();
       toast.success(res.message);
     } catch (error) {
@@ -87,16 +88,21 @@ const Category = () => {
   return (
     // <div className="flex justify-center bg-gray-100 h-screen">
 
+   
+
     <div className="flex justify-center  h-full">
+         
       <div className="w-full m-9 bg-white rounded-xl">
         <div className="flex justify-between items-center"></div>
         <div className="flex justify-between items-center ">
-          <h1 className="text-3xl text-black font-semibold m-4">Category</h1>
+          <h1 className="text-3xl text-black font-semibold m-4">
+            currency List
+          </h1>
           <button
             onClick={handleModel}
             className="px-4 py-2 bg-green-500 text-white rounded-md m-4"
           >
-            Add Category
+            Add Currency
           </button>
         </div>
         <div className="flex justify-between items-center m-4">
@@ -123,13 +129,13 @@ const Category = () => {
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Category Name
+                          Currency Name
                       </th>
                       <th
                         scope="col"
                         className=" px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Category Date
+                        Currency Code
                       </th>
                       <th
                         scope="col"
@@ -152,7 +158,7 @@ const Category = () => {
                       </tr>
                     ) : (
                       filtered?.map((item) => {
-                        const { _id, name, date } = item;
+                        const { _id, name, code  } = item;
                         return (
                           <tr key={_id}>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -166,7 +172,7 @@ const Category = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm text-gray-900">
-                                {date}
+                                {code }
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -178,8 +184,8 @@ const Category = () => {
                                 onClick={() => {
                                   setIsEdit(true);
                                   setId(_id);
-                                  setCategoryName(name);
-                                  setCategoryDate(date);
+                                    setCurrencyName(name);
+                                    setCurrencyCode(code);
                                   setModel(true);
                                 }}
                               >
@@ -188,7 +194,7 @@ const Category = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <button
-                                onClick={() => removeCategory(_id)}
+                                onClick={() => removeCurrency(_id)}
                                 className="text-red-600 hover:text-indigo-900"
                               >
                                 <FaTrash className="text-red-600 hover:text-indigo-900" />
@@ -255,7 +261,7 @@ const Category = () => {
                       className="text-lg leading-6 font-medium text-gray-900"
                       id="modal-headline"
                     >
-                      Add Category
+                        {isEdit ? "Edit Currency" : "Add Currency"}
                     </h3>
                     <div className="mt-2">
                       <form className="w-full max-w-lg">
@@ -265,16 +271,16 @@ const Category = () => {
                               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                               for="grid-first-name"
                             >
-                              Category Name
+                                Currency Name
                             </label>
                             <input
-                              onChange={(e) => setCategoryName(e.target.value)}
-                              value={categoryName}
+                                onChange={(e) => setCurrencyName(e.target.value)}
+                                value={currencyName}
                               name="categoryName"
                               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                               id="grid-first-name"
                               type="text"
-                              placeholder="Category Name"
+                                placeholder="Currency Name"
                             />
                             <p className="text-red-500 text-xs italic">
                               Please fill out this field.
@@ -285,16 +291,16 @@ const Category = () => {
                               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                               for="grid-last-name"
                             >
-                              Category Date
+                            Currency code
                             </label>
                             <input
-                              onChange={(e) => setCategoryDate(e.target.value)}
-                              value={categoryDate}
-                              name="categoryDate"
+                                onChange={(e) => setCurrencyCode(e.target.value)}
+                              value={currencyCode}
+                              name="currencyCode"
                               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                               id="grid-last-name"
-                              type="date"
-                              placeholder="Category Date"
+                              type="text"
+                                placeholder="Currency Code"
                             />
                           </div>
                         </div>
@@ -329,9 +335,9 @@ const Category = () => {
     return arr?.filter((el) => {
       return (
         el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        el.date.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
+        el.code.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     });
   }
 };
-export default Category;
+export default AddCurrency;
