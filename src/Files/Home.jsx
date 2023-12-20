@@ -1,12 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-// import { useNanvigate } from "react-router-dom";
 import {
   fetchCustomerCount,
   fetchProductCount,
   fetchCategoryCount,
   fetchUserCount,
-  //checkToken,
 } from "../services/api-calls";
 
 const Report = () => {
@@ -14,112 +12,73 @@ const Report = () => {
   const [productCount, setProductCount] = useState("0");
   const [userCount, setUserCount] = useState("0");
   const [categoryCount, setCategoryCount] = useState("0");
-  //const token = localStorage.getItem("token");
-  // const navigate = useNavigate();
 
   useEffect(() => {
-    const getCustomerCount = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetchCustomerCount();
-        const count = response.count;
-        setCustomerCount(String(count)); // Convert to string if needed
-      } catch (error) {
-        console.error("Error fetching customer count:", error);
-      }
-    };
-    getCustomerCount();
-    const getProductCount = async () => {
-      try {
-        const response = await fetchProductCount();
-        const count = response.count;
-        setProductCount(String(count)); // Convert to string if needed
-      } catch (error) {
-        console.error("Error fetching product count:", error);
-      }
-    };
-    getProductCount();
+        const customerResponse = await fetchCustomerCount();
+        const productResponse = await fetchProductCount();
+        const categoryResponse = await fetchCategoryCount();
+        const userResponse = await fetchUserCount();
 
-    const getCategoryCount = async () => {
-      try {
-        const response = await fetchCategoryCount();
-        const count = response.count;
-        setCategoryCount(String(count)); // Convert to string if needed
+        setCustomerCount(String(customerResponse.count));
+        setProductCount(String(productResponse.count));
+        setCategoryCount(String(categoryResponse.count));
+        setUserCount(String(userResponse.count));
       } catch (error) {
-        console.error("Error fetching category count:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    getCategoryCount();
 
-    const getUserCount = async () => {
-      try {
-        const response = await fetchUserCount();
-        const count = response.count;
-        setUserCount(String(count)); // Convert to string if needed
-      } catch (error) {
-        console.error("Error fetching user count:", error);
-      }
-    };
-    getUserCount();
+    fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   (async function checkIsAuth() {
-  //     try {
-  //       const res = await checkToken(token);
-  //     } catch (error) {
-  //       localStorage.removeItem("token");
-  //       navigate("/login");
-  //     }
-  //   })();
-  // }, [token]);
-
   return (
-    <div className="">
+    <div className="bg-gray-200 min-h-screen p-8">
       <div className="flex flex-wrap justify-center items-center">
+        {/* Total Sales */}
         <div className="w-full lg:w-1/3 xl:w-1/3 p-3">
-          <div className="bg-white border rounded shadow">
+          <div className="bg-blue-500 hover:bg-blue-600 border rounded shadow transition duration-300">
             <div className="border-b p-3">
-              <h5 className="font-bold uppercase text-gray-600">Total Sales</h5>
+              <h5 className="font-bold uppercase text-white">Total Sales</h5>
             </div>
             <div className="p-5">
-              <p className="text-3xl font-bold text-center text-gray-800">
+              <p className="text-3xl font-bold text-center text-white animate__animated animate__fadeIn">
                 $3249
               </p>
-              <p className="text-sm text-center text-gray-500">0.5% Target</p>
+              <p className="text-sm text-center text-white">0.5% Target</p>
             </div>
           </div>
         </div>
 
+        {/* Total Customer */}
         <div className="w-full lg:w-1/3 xl:w-1/3 p-3">
-          <div className="bg-white border rounded shadow">
+          <div className="bg-green-500 hover:bg-green-600 border rounded shadow transition duration-300">
             <div className="border-b p-3">
-              <h5 className="font-bold uppercase text-gray-600">
-                Total Customer
-              </h5>
+              <h5 className="font-bold uppercase text-white">Total Customer</h5>
             </div>
             <div className="p-5">
-              <p className="text-3xl font-bold text-center text-gray-800">
+              <p className="text-3xl font-bold text-center text-white animate__animated animate__fadeIn">
                 {customerCount}
               </p>
-              <p className="text-sm text-center text-gray-500">
+              <p className="text-sm text-center text-white">
                 {customerCount / 100} % From Last month
               </p>
             </div>
           </div>
         </div>
 
-        <div className="w-full  lg:w-1/3 xl:w-1/3 p-3 ">
-          <div className="bg-white border rounded shadow">
+        {/* Total Products */}
+        <div className="w-full lg:w-1/3 xl:w-1/3 p-3 ">
+          <div className="bg-yellow-500 hover:bg-yellow-600 border rounded shadow transition duration-300">
             <div className="border-b p-3">
-              <h5 className="font-bold uppercase text-gray-600">
-                Total Products
-              </h5>
+              <h5 className="font-bold uppercase text-white">Total Products</h5>
             </div>
             <div className="p-5">
-              <p className="text-3xl font-bold text-center text-gray-800">
+              <p className="text-3xl font-bold text-center text-white animate__animated animate__fadeIn">
                 {productCount}
               </p>
-              <p className="text-sm text-center text-gray-500">
+              <p className="text-sm text-center text-white">
                 {productCount / 100} % From Last month
               </p>
             </div>
@@ -127,53 +86,52 @@ const Report = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap flex-col md:flex-row">
+      <div className="flex flex-wrap flex-col md:flex-row mt-8">
+        {/* Total Categories */}
         <div className="w-full md:w-1/2 xl:w-1/3 p-3">
-          <div className="bg-white border rounded shadow">
+          <div className="bg-indigo-500 hover:bg-indigo-600 border rounded shadow transition duration-300">
             <div className="border-b p-3">
-              <h5 className="font-bold uppercase text-gray-600">
-                Total Categories
-              </h5>
+              <h5 className="font-bold uppercase text-white">Total Categories</h5>
             </div>
             <div className="p-5">
-              <p className="text-3xl font-bold text-center text-gray-800">
+              <p className="text-3xl font-bold text-center text-white animate__animated animate__fadeIn">
                 {categoryCount}
               </p>
-              <p className="text-sm text-center text-gray-500">
+              <p className="text-sm text-center text-white">
                 {categoryCount / 100} % From Last month
               </p>
             </div>
           </div>
         </div>
 
+        {/* Total Revenue */}
         <div className="w-full md:w-1/2 xl:w-1/3 p-3">
-          <div className="bg-white border rounded shadow">
+          <div className="bg-purple-500 hover:bg-purple-600 border rounded shadow transition duration-300">
             <div className="border-b p-3">
-              <h5 className="font-bold uppercase text-gray-600">
-                Total Revenue
-              </h5>
+              <h5 className="font-bold uppercase text-white">Total Revenue</h5>
             </div>
             <div className="p-5">
-              <p className="text-3xl font-bold text-center text-gray-800">
+              <p className="text-3xl font-bold text-center text-white animate__animated animate__fadeIn">
                 $5689
               </p>
-              <p className="text-sm text-center text-gray-500">
+              <p className="text-sm text-center text-white">
                 {5689 / 100} % From Last month
               </p>
             </div>
           </div>
         </div>
 
+        {/* Total Users */}
         <div className="w-full md:w-1/2 xl:w-1/3 p-3">
-          <div className="bg-white border rounded shadow">
+          <div className="bg-red-500 hover:bg-red-600 border rounded shadow transition duration-300">
             <div className="border-b p-3">
-              <h5 className="font-bold uppercase text-gray-600">Total Users</h5>
+              <h5 className="font-bold uppercase text-white">Total Users</h5>
             </div>
             <div className="p-5">
-              <p className="text-3xl font-bold text-center text-gray-800">
+              <p className="text-3xl font-bold text-center text-white animate__animated animate__fadeIn">
                 {userCount}
               </p>
-              <p className="text-sm text-center text-gray-500">
+              <p className="text-sm text-center text-white">
                 {userCount / 100} % From Last month
               </p>
             </div>

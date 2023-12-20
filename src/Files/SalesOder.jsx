@@ -23,6 +23,8 @@ import { useCart } from "../context/CartProvider";
 import "../Component/App.css";
 import useAuth from "../context/useAuth";
 
+
+
 const SalesOrder = () => {
   const { data, isLoading } = useSWR("/products", fetchProducts);
   const { data: customers } = useSWR("/customers", fetchCustomer);
@@ -62,6 +64,8 @@ const SalesOrder = () => {
       toast.error("Please fill all the fields");
     }
   };
+
+
   const finalSubmit = async (e) => {
     e.preventDefault();
     // cartState have items array and contains array of object so ineed to map it and only id of array
@@ -384,6 +388,7 @@ const SalesOrder = () => {
         </div>
       )}
       {formNo === 3 && (
+      <div className="printable-content">
         <div className="">
           <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-3/4 bg-white shadow-lg m-10">
@@ -500,9 +505,6 @@ const SalesOrder = () => {
                             {cartState.items.indexOf(item) + 1}
                           </td>
 
-                          {/* <td className="px-6 py-4 text-sm text-gray-500">
-                            {item.id}
-                          </td> */}
                           <td className="px-6 py-4 text-sm text-gray-500">
                             {item.name}
                           </td>
@@ -523,29 +525,7 @@ const SalesOrder = () => {
                         </tr>
                       ))}
 
-                      {/* <tr className="whitespace-nowrap">
-                        <td className="px-6 py-4 text-sm text-gray-500">1</td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900">
-                            Amazon Brand - Symactive Men's Regular Fit T-Shirt
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-500">4</div>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">$20</td>
-                        <td className="px-6 py-4">$30</td>
-                      </tr>
-
-                      <tr className="text-white bg-gray-800">
-                        <th colspan="3"></th>
-                        <td className="text-sm font-bold">
-                          <b>Total</b>
-                        </td>
-                        <td className="text-sm font-bold">
-                          <b>$999.0</b>
-                        </td>
-                      </tr> */}
+                     
                     </tbody>
                   </table>
                 </div>
@@ -608,6 +588,7 @@ const SalesOrder = () => {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
     </div>

@@ -16,6 +16,10 @@ export default function DashboardSidebar() {
   const [show, setShow] = useState(false);
   const [showReport, setShowReport] = useState(false);
 
+  // console.log user login id 
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
+
   return (
     <Fragment>
       <div
