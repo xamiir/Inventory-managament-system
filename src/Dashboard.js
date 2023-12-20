@@ -3,24 +3,20 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Products from "./Files/Products";
-import Customers from "./Files/Customers";
-
-import SalesOrder from "./Files/SalesOder";
 import Home from "./Files/Home";
-import Userlist from "./Files/Userlist";
-import Category from "./Files/Category";
-import ProductList from "./Files/ProductList";
-import Reports from "./Files/Report";
-import CustomerReport from "./Files/CustomerReport";
-import CategoryReport from "./Files/CategoryReport";
-import ProductReport from "./Files/ProductReport";
-import UserReport from "./Files/UserReport";
+
 import DashboardSidebar from "./Component/DashboardSidebar";
 import LoginPage from "./Files/LoginPage";
 import PrivateRoute from "./Component/PrivateRoute";
 
+import AddCurrency from "./Files/AddCurrency";
+import Transactions from "./Files/Transactions";
+import AddTransaction from "./Files/AddTransaction";
+import Signup from "./Files/Signup";
+
+
 const Dashboard = () => {
+  const timeOut = 1000;
   // const [product, setProduct] = useState([]);
 
   return (
@@ -34,25 +30,20 @@ const Dashboard = () => {
               </div>
             }
           >
-            <Route path="/" element={<Home />} />
-            <Route path="/userlist" element={<Userlist />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/edit-product/:id" element={<Products />} />
-            <Route path="/ProductList" element={<ProductList />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/customers" element={<Customers />} />
-            <Route path="/salesorder" element={<SalesOrder />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/customerreport" element={<CustomerReport />} />
-            <Route path="/CategoryReport" element={<CategoryReport />} />
-            <Route path="/productReport" element={<ProductReport />} />
-            <Route path="/userReport" element={<UserReport />} />
+            <Route path="/home" element={<Home />} />
+          
+          
+            <Route path="/addcurrency" element={<AddCurrency />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/addtransaction" element={<AddTransaction />} />
+            
           </Route>
         </Route>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
 
-      <ToastContainer />
+      <ToastContainer autoClose={timeOut} />
     </BrowserRouter>
   );
 };

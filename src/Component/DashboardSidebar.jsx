@@ -2,19 +2,29 @@ import { Fragment, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import {
   FaHome,
-  FaUser,
-  FaUserPlus,
-  FaFileInvoice,
-  FaBoxOpen,
+ 
+ 
+  FaMoneyBillAlt,
+
   FaChartBar,
   FaSignOutAlt,
   FaListAlt,
+  FaCcMastercard,
+ 
+ 
 } from "react-icons/fa";
 import "./App.css";
 
 export default function DashboardSidebar() {
   const [show, setShow] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  // console.log user id login 
+  
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user._id);
+
+  
+   
 
   // console.log user login id 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -33,17 +43,19 @@ export default function DashboardSidebar() {
           <div className="flex items-center justify-center">
             <img
               className="h-8 w-8 rounded-full object-cover"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkQdZn8r9J-MQ8_DwiVN4-XbkhUw7YeI_gNw&usqp=CAU"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYOxhrR8VMEWZTYyv6JssYmCKcdBfFzNxUhQ&usqp=CAU"
               alt="profile"
             />
-            <span className="ml-3 text-xl font-bold">Inventory</span>
+            <span className="ml-3 text-xl font-bold">
+            Air Exchange Money
+            </span>
           </div>
         </div>
         <div className="flex flex-col justify-between flex-1 h-0 overflow-y-auto">
           <ul className="flex flex-col py-4 space-y-1">
             <li className="px-5">
               <Link
-                to="/"
+                to="/home"
                 className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
               >
                 <FaHome className="w-5 h-5" />
@@ -51,40 +63,33 @@ export default function DashboardSidebar() {
               </Link>
             </li>
             <li className="px-5">
-              <Link
-                to="/userlist"
-                className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
-              >
-                <FaUser className="w-5 h-5" />
-                <span className="ml-2">Users</span>
-              </Link>
-            </li>
-            <li className="px-5">
               <button
                 onClick={() => setShow(!show)}
                 className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white focus:outline-none"
               >
-                <FaBoxOpen className="w-5 h-5" />
-                <span className="ml-2">Products</span>
+                <FaCcMastercard className="w-5 h-5" />
+                <span className="ml-2">Transactions</span>
               </button>
               {show ? (
                 <ul className="flex flex-col py-4 space-y-1">
                   <div className="px-5">
                     <Link
-                      to="/products"
+                      to="/transactions"
                       className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
                     >
-                      <FaBoxOpen className="w-5 h-5" />
-                      <span className="ml-2">Add Products</span>
+                      <FaListAlt className="w-5 h-5" />
+                      <span className="ml-2">List Transactions</span>
                     </Link>
                   </div>
                   <div className="px-5">
                     <Link
-                      to="/ProductList"
+                      to="/addtransaction"
                       className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
                     >
-                      <FaListAlt className="w-5 h-5" />
-                      <span className="ml-2">Products List</span>
+                      <FaCcMastercard className="w-5 h-5" />
+                      <span className="ml-2">
+                        Add Transactions
+                      </span>
                     </Link>
                   </div>
                 </ul>
@@ -92,31 +97,15 @@ export default function DashboardSidebar() {
             </li>
             <li className="px-5">
               <Link
-                to="/category"
+                to="/addcurrency"
                 className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
               >
-                <FaListAlt className="w-5 h-5" />
-                <span className="ml-2">Category</span>
+                < FaMoneyBillAlt className="w-5 h-5" />
+                <span className="ml-2">Currency</span>
               </Link>
             </li>
-            <li className="px-5">
-              <Link
-                to="/customers"
-                className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
-              >
-                <FaUserPlus className="w-5 h-5" />
-                <span className="ml-2">Customers</span>
-              </Link>
-            </li>
-            <li className="px-5">
-              <Link
-                to="/salesorder"
-                className="flex items-center px-2 py-2 text-sm font-medium leading-snug text-white rounded-md dark-mode:text-gray-200 hover:bg-gray-700 dark-mode:hover:bg-white"
-              >
-                <FaFileInvoice className="w-5 h-5" />
-                <span className="ml-2">Sales Order</span>
-              </Link>
-            </li>
+          
+            
             {/* <li className="px-5">
           <Link
             to="/reports"
@@ -195,7 +184,7 @@ export default function DashboardSidebar() {
               onClick={() => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
-                window.location.reload();
+                window.location.href = "/";
               }}
             >
               <FaSignOutAlt className="w-5 h-5" />
